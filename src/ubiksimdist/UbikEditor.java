@@ -5,8 +5,6 @@
 
 package ubiksimdist;
 
-import sim.app.ubik.UbikSimLauncher;
-import sim.app.ubik.behaviors.Automaton;
 import ubik3d.SweetHome3D;
 
 /**

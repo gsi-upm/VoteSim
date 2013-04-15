@@ -5,15 +5,12 @@
 package sim.app.ubik.behaviors.sharedservices;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import sim.app.ubik.Ubik;
+
+import es.upm.dit.gsi.voting.*;
+
 import sim.app.ubik.domoticDevices.SharedService;
-import sim.app.ubik.people.Person;
-import sim.util.Int2D;
 import sim.util.MutableInt2D;
-import ubik3d.model.HomePieceOfFurniture;
 
 /**
  * Objeto con información acerca de negociaciones así como las preferencias de
@@ -28,7 +25,7 @@ public class Negotiation {
      * 0: first agent configurates service 1: decision voting; 2:
      */
     protected static int codeOfNegotiation = 1;
-     protected static int codeOfSatisfactionFunction = 0;
+    protected static int codeOfSatisfactionFunction = 0;
     protected static boolean echo = true;
 
  
@@ -203,39 +200,8 @@ public class Negotiation {
         return ordered;
     }
 
-    protected String votesToString(ArrayList<MutableInt2D> votes, SharedService css) {
-        String r = "";
-        for (MutableInt2D mi : votes) {
-            r += css.getConfigurations()[mi.x] + "/" + mi.y + ",";
-        }
-        return r.substring(0, r.length() - 1);
-    }
-
-    protected void selectConfigurationByVoting(SharedService css) {
-        if (css.getUsers().size() > 1) {
-            String configurations[] = css.getConfigurations();
-            ArrayList<MutableInt2D> votes = this.votingConfigurations(css);
-            ArrayList<MutableInt2D> orderedVotes = this.orderPreferences(votes);
-            css.setConfiguration(configurations[orderedVotes.get(0).x]);
-
-            if (echo) {
-                System.out.println("VOTES ORDERED for " + css.getName());
-                System.out.println(votesToString(orderedVotes, css));
-                System.out.println("Result: " + css.getCurrentConfiguration());
-            }
-        }
 
 
-    }
-
-    protected void selectConfigurationByFistArrival(SharedService css) {
-        UserInterface firstUser = css.getUsers().get(0);
-        String configuration = getNextPreference(firstUser, css, 0);
-        css.setConfiguration(configuration);
-        if (echo) {
-            System.out.println(css.getName() + "/" + configuration + ", configuration given by first arrival, agent " + firstUser.getName());
-        }
-    }
 
    public static void setCodeOfSatisfactionFuction(int c) {
         Negotiation.codeOfSatisfactionFunction = c;
@@ -256,6 +222,9 @@ public class Negotiation {
     }
 
     public void negotiate(SharedService css) {
+    	
+    	VotingMethod vm = null;
+    	
         if (css.getUsers().isEmpty()) {
             return;
         }
@@ -264,34 +233,35 @@ public class Negotiation {
             css.setConfiguration(getNextPreference(user, css, 0));
             return;
         }
-        if (codeOfNegotiation == 0) {
-            selectConfigurationByFistArrival(css);
-        }
-        if (codeOfNegotiation == 1) {
-            selectConfigurationByVoting(css);
-        }
+        
+        if (codeOfNegotiation == 0) 
+        	vm = new FirstArrivalMethod(css);
+        
+        else if (codeOfNegotiation == 1) 
+        	vm = new RangeVotingMethod(css);
+        
+        else if (codeOfNegotiation == 2) 
+        	vm = new AcceptableForAllMethod(css);
+        
+        else if (codeOfNegotiation == 3) 
+        	vm = new PluralityVotingMethod(css);
+        
+        else if (codeOfNegotiation == 4) 
+        	vm = new CumulativeVotingMethod(css);
+        
+        else if (codeOfNegotiation == 5) 
+        	vm = new ApprovalVotingMethod(css);
+        
+        else if (codeOfNegotiation == 6) 
+        	vm = new BordaVotingMethod(css);
 
-        if (codeOfNegotiation == 2) {
-            selectConfigurationByFirstVoteAcceptableForAllOrVote(css);
-        }
+
+        css.setConfiguration(vm.getSelectedConfiguration());
 
      
     }
 
-    /**
-     * Ver si una configuración es aceptable para todos
-     *
-     * @param configurations
-     * @param preference
-     */
-    private boolean isAcceptableForAll(String configuration, SharedService css) {
-        for (UserInterface ui : css.getUsers()) {
-            if (!ui.getNegotiation().isAcceptable(configuration, css, true)) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 
     /**
      * Aceptable si tiene nota media, cada agente puede tener una extensión de
@@ -351,46 +321,6 @@ public class Negotiation {
         }
         return counter;
     }
-
-    /**
-     *
-     * @param css
-     * @return false if there was not something acceptable for all
-     */
-    private boolean selectConfigurationByFirstVoteAcceptableForAll(SharedService css) {
-        ArrayList<MutableInt2D> orderedVotes = this.orderPreferences(this.votingConfigurations(css));
-        for (MutableInt2D mi : orderedVotes) {
-            if (isAcceptableForAll(css.getConfigurations()[mi.x], css)) {
-                css.setConfiguration(mi.x);
-                if (echo) {
-                    System.out.println("First vote acceptable for all: " + css.getConfigurations()[mi.x] + ", votes: " + votesToString(orderedVotes, css));
-                }
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    /**
-     * El primer voto aceptable o a voto si no se encuentra
-     *
-     * @param css
-     */
-    private void selectConfigurationByFirstVoteAcceptableForAllOrVote(SharedService css) {
-        boolean r = selectConfigurationByFirstVoteAcceptableForAll(css);
-        if (!r) {
-            if (echo) {
-                System.out.println("No vote acceptable for all in , deciding by votes");
-            }
-            selectConfigurationByVoting(css);
-        }
-    }
-
-    
-
- 
-
 
 
 }

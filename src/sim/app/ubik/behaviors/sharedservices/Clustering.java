@@ -5,17 +5,17 @@
 
 package sim.app.ubik.behaviors.sharedservices;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sim.app.ubik.Ubik;
 
+import sim.app.ubik.Ubik;
 import sim.app.ubik.domoticDevices.SharedService;
 import sim.app.ubik.people.Person;
 import weka.clusterers.AbstractClusterer;
 import weka.clusterers.SimpleKMeans;
-import weka.core.*;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
 
 
 /**

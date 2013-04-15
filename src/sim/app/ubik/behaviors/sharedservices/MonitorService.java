@@ -8,6 +8,7 @@ package sim.app.ubik.behaviors.sharedservices;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import sim.app.ubik.Ubik;
 import sim.app.ubik.domoticDevices.SharedService;
 import sim.app.ubik.people.PersonHandler;

@@ -5,18 +5,9 @@
 package ubiksimdist;
 
 import sim.app.ubik.Ubik;
-import sim.app.ubik.UbikSimLauncher;
-import sim.app.ubik.UbikSimWithUI;
 import sim.app.ubik.behaviors.Automaton;
 import sim.app.ubik.behaviors.sharedservices.MonitorService;
-import sim.app.ubik.behaviors.sharedservices.MonitorServiceGUI;
-import sim.app.ubik.behaviors.sharedservices.Negotiation;
 import sim.app.ubik.people.PersonHandler;
-import sim.app.ubik.people.TestPerson;
-import sim.app.ubik.utils.GenericLogger;
-import sim.display.Console;
-import sim.engine.SimState;
-import sim.engine.Steppable;
 
 /**
  *

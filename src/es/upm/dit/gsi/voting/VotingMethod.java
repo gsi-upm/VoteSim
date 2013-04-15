@@ -1,0 +1,137 @@
+package es.upm.dit.gsi.voting;
+
+import java.util.ArrayList;
+
+import sim.app.ubik.behaviors.sharedservices.UserInterface;
+import sim.app.ubik.domoticDevices.SharedService;
+import sim.util.MutableInt2D;
+
+public abstract class VotingMethod {
+	SharedService css;
+	String selectedConfiguration;
+	Boolean echo = true;
+	ArrayList<MutableInt2D> orderedVotes;
+	ArrayList<MutableInt2D> votes;
+	
+	public VotingMethod(SharedService css) {
+		this.css = css;
+		
+	}
+	
+	/**
+	 * Returns the selected configuration by the Voting Method
+	 * @return
+	 */
+	public String getConfiguration() {
+		return null;
+	}
+	
+	/**
+	 * Returns number of users
+	 * @return Number of users
+	 */
+	public int getUsersSize() {
+		return this.css.getUsers().size();
+	}
+	
+	/**
+	 * Setter for the selected configuration
+	 * @param conf
+	 */
+	public void setSelectedConfiguration(String conf) {
+		this.selectedConfiguration = conf;
+	}
+	
+	 public void setSelectedConfiguration(int index){
+         this.selectedConfiguration = this.css.getConfigurations()[index];
+     }
+	
+	/**
+	 * Returns the first user that arrives to the shared service
+	 * @return First user in arrival
+	 */
+	public UserInterface getFirstUser() {
+		return this.css.getUsers().get(0);
+	}
+	
+	/**
+	 * Getter for selectedConfiguration
+	 * @return Selected configuration by method
+	 */
+	public String getSelectedConfiguration() {
+		return this.selectedConfiguration;
+	}
+	
+	protected String votesToString(ArrayList<MutableInt2D> votes, SharedService css) {
+        String r = "";
+        for (MutableInt2D mi : votes) {
+            r += css.getConfigurations()[mi.x] + "/" + mi.y + ",";
+        }
+        return r.substring(0, r.length() - 1);
+    }
+	
+	/**
+     * Ordena un array de votos o preferencias (mutablesIn2D donde x es la
+     * configuracion e y la preferencia/voto (los votos/preferencias estan
+     * ligados a ambos ArrayList).
+     *
+     * @param votes
+     * @return
+     */
+    protected ArrayList<MutableInt2D> orderPreferences(ArrayList<MutableInt2D> preferences) {
+        @SuppressWarnings("unchecked")
+		ArrayList<MutableInt2D> ordered = (ArrayList<MutableInt2D>) preferences.clone();
+        MutableInt2D aux;
+        for (int i = 1; i < ordered.size(); i++) {
+            for (int j = 0; j < ordered.size() - i; j++) {
+                if (ordered.get(j).y < ordered.get(j + 1).y) {
+                    aux = ordered.get(j);
+                    ordered.set(j, ordered.get(j + 1));
+                    ordered.set(j + 1, aux);
+                }
+            }
+        }
+
+        return ordered;
+    }
+    
+    /**
+     * Devuelve los votos que recibe cada servicio en un array de Int2D, siendo
+     * x el índice de la configuración del serivicio e y los votos recibidos.
+     *
+     * @param css
+     * @return
+     */
+    protected ArrayList<MutableInt2D> votingConfigurations(SharedService css) {
+
+        String configurations[] = css.getConfigurations();
+        ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
+        //incializar votos con configuraciones
+        for (int i = 0; i < configurations.length; i++) {
+            votes.add(new MutableInt2D(i, 0));
+        }
+        //votar
+        for (UserInterface ui : css.getUsers()) {
+            for (int i = 0; i < configurations.length; i++) {
+                votes.get(i).y += ui.getNegotiation().getPreferences(css).get(configurations[i]);
+            }
+        }
+        return votes;
+    }
+    
+    /**
+     * obtener la preferencia favorita
+     *
+     * @param i 0 la favorita, 1 la segunda...
+     * @return
+     */
+    public String getNextPreference(UserInterface ui, SharedService s, int i) {
+        return s.getConfigurations()[ui.getNegotiation().getOrderedPreferences(s).get(i).x];
+    }
+	
+	 
+	
+	
+	
+
+}

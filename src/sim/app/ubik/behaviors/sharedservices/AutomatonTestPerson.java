@@ -6,8 +6,8 @@ package sim.app.ubik.behaviors.sharedservices;
  */
 
 
-import java.awt.Color;
 import java.util.ArrayList;
+
 import sim.app.ubik.behaviors.Automaton;
 import sim.app.ubik.behaviors.DoNothing;
 import sim.app.ubik.behaviors.Move;

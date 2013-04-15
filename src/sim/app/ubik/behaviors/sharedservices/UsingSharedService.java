@@ -5,17 +5,12 @@
 
 package sim.app.ubik.behaviors.sharedservices;
 
-import java.awt.Color;
-import java.util.List;
-import sim.app.ubik.behaviors.DoNothing;
 import sim.app.ubik.behaviors.PositionTools;
 import sim.app.ubik.behaviors.SimpleState;
 import sim.app.ubik.building.rooms.Room;
 import sim.app.ubik.domoticDevices.SharedService;
-import sim.app.ubik.domoticDevices.TV;
 import sim.app.ubik.people.Person;
 import sim.engine.SimState;
-import sim.util.Int2D;
 
 /**
  *

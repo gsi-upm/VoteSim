@@ -6,11 +6,8 @@
 package sim.app.ubik.behaviors.sharedservices;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import sim.app.ubik.Ubik;
-import sim.app.ubik.domoticDevices.SharedService;
-import sim.app.ubik.people.Person;
 
 /**
  *

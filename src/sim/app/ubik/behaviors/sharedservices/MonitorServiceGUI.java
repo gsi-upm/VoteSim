@@ -4,29 +4,13 @@
  */
 package sim.app.ubik.behaviors.sharedservices;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import sim.app.ubik.chart.GenericChart;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JComboBox;
 import sim.app.ubik.Ubik;
-import sim.app.ubik.UbikSimLauncher;
-import sim.app.ubik.behaviors.PositionTools;
-import sim.app.ubik.domoticDevices.SharedService;
-import sim.app.ubik.people.Person;
+import sim.app.ubik.chart.GenericChart;
 import sim.app.ubik.people.PersonHandler;
-import sim.app.ubik.utils.GenericLogger;
 import sim.display.GUIState;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 import sim.engine.Stoppable;
-import sim.util.Int2D;
-import sim.util.MutableDouble;
 import ubiksimdist.SharedServicesSim;
 
 /**
@@ -123,7 +107,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
 
         jLabel4.setText("Negotiation ");
 
-        jcomboneg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Order of arrival", "Voting ", "Voting + acceptable for all" }));
+        jcomboneg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Order of arrival", "Range Voting ", "Range Voting + acceptable for all", "Plurality Voting", "Cumulative Voting", "Approval Voting", "Borda Voting" }));
         jcomboneg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombonegActionPerformed(evt);
@@ -356,7 +340,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcombonegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombonegActionPerformed
-        Negotiation.codeOfNegotiation= jcomboneg.getSelectedIndex();
+        Negotiation.setCodeOfNegotiation(jcomboneg.getSelectedIndex());
         clearLogs();
     }//GEN-LAST:event_jcombonegActionPerformed
 

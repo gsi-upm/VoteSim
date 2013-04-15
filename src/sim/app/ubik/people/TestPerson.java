@@ -1,19 +1,11 @@
 package sim.app.ubik.people;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
 import sim.app.ubik.Ubik;
-import sim.app.ubik.behaviors.PositionTools;
-
 import sim.app.ubik.behaviors.sharedservices.Negotiation;
 import sim.app.ubik.behaviors.sharedservices.UserInterface;
 import sim.app.ubik.building.SpaceArea;
 import sim.app.ubik.building.connectionSpace.Door;
-
 import sim.app.ubik.building.rooms.Room;
-import sim.app.ubik.domoticDevices.SharedService;
-import sim.app.ubik.domoticDevices.TV;
 import sim.engine.SimState;
 import sim.util.Int2D;
 import ubik3d.model.HomePieceOfFurniture;

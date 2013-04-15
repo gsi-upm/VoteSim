@@ -25,9 +25,8 @@
 package sim.app.ubik.chart;
 
 import javax.swing.JFrame;
+
 import sim.display.Controller;
-
-
 import sim.display.Display2D;
 import sim.display.GUIState;
 import sim.engine.Schedule;
