@@ -128,6 +128,72 @@ public abstract class VotingMethod {
     public String getNextPreference(UserInterface ui, SharedService s, int i) {
         return s.getConfigurations()[ui.getNegotiation().getOrderedPreferences(s).get(i).x];
     }
+    
+    
+    /**
+     * Returns ordered votes converted into string
+     * @return orderedVotes
+     */
+    public String orderedVotesToString() {
+    	return this.orderedVotes.toString();
+    }
+    
+    public String userPreferencesToString() {
+    	
+    	 String userPreferences = "";    	 
+    	 String configurations[] = css.getConfigurations();
+         ArrayList<MutableInt2D> ordered = new ArrayList<MutableInt2D>();
+
+
+         for (UserInterface ui : css.getUsers()) {
+         	ordered = ui.getNegotiation().getOrderedPreferences(css);
+         	userPreferences += "Preferencias del usuario "+ui.getName()+"\n----------------------------------\n";
+         	 for (int i = 0; i < configurations.length; i++) {
+         		userPreferences += configurations[ordered.get(i).x]+ ": "+ordered.get(i).y+"\n";                 
+             }
+         	 userPreferences += "\n\n";
+             
+         }
+    	return userPreferences;
+    }
+    
+    /** 
+     * If there there is a draw it will return number bigger than zero.
+     * The returned number means how many configurations are at the first position.
+     * @return
+     */
+    public int getDrawCount() {
+    	ArrayList<MutableInt2D> votes = getOrderedVotes();
+    	int count = 0;
+    	for(int i=1; i < votes.size(); i++) {
+    		if(votes.get(0).y == votes.get(i).y )
+    			count++;
+    		else
+    				return count;
+    	}
+    	
+    	return count;
+    	
+    }
+    
+    /**
+     * Returns true if there is a draw
+     * @return
+     */
+    public boolean isDraw() {
+    	if(this.getDrawCount() != 0)
+    		return true;
+    	else
+    		return false;
+    }
+
+	public ArrayList<MutableInt2D> getOrderedVotes() {
+		return orderedVotes;
+	}
+
+	public void setOrderedVotes(ArrayList<MutableInt2D> orderedVotes) {
+		this.orderedVotes = orderedVotes;
+	}
 	
 	 
 	

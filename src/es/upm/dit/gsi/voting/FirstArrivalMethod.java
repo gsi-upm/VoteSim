@@ -4,6 +4,13 @@ import sim.app.ubik.domoticDevices.SharedService;
 
 public class FirstArrivalMethod extends VotingMethod {
 
+	/**
+	 * Devuelve la preferencia asociada al primer usuario
+	 * Mediante el método getNextPreference escogemos del usuario que ha llegado el primero su preferencia favorita
+	 * marcada con el número 0.
+	 * 
+	 * @param css
+	 */
 	public FirstArrivalMethod(SharedService css) {
 		super(css);		 
 	        String configuration = getNextPreference(this.getFirstUser(), css, 0);

@@ -21,8 +21,12 @@ public class PluralityVotingMethod extends VotingMethod {
 	 */
 	public void doVoting() {
 		if (this.getUsersSize()> 1) {
-	           String configurations[] = this.css.getConfigurations();	            
+	           String configurations[] = this.css.getConfigurations();
+	           
+	           // Se realizan los votos a cada servicio según el algoritmo.
 	           this.votes = this.votingConfigurations(this.css);
+	           
+	           // Se ordenan los votos
 	           this.orderedVotes = this.orderPreferences(this.votes);	            
 	           setSelectedConfiguration(configurations[this.orderedVotes.get(0).x]);      
 	    }		
@@ -30,6 +34,9 @@ public class PluralityVotingMethod extends VotingMethod {
 	
 	    
     /**
+     * Es el método que se encarga de realizar las votaciones.
+     * Va recorriendo las configuraciones de preferencias de cada uno de los usuarios y va acumulando la suma del valor 
+     * que especifica para cada uno de los servicios.
      * Devuelve los votos que recibe cada servicio en un array de Int2D, siendo
      * x el índice de la configuración del serivicio e y los votos recibidos.
      *
