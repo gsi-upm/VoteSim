@@ -258,10 +258,13 @@ public class Negotiation {
         System.out.println(vm.userPreferencesToString());
         css.setConfiguration(vm.getSelectedConfiguration());
         
+        /*
         if(vm.isDraw())
         	System.out.println("Ha habido empate de" +vm.getDrawCount()+ "preferencias");
         else
         	System.out.println("No hay empate");
+        	
+        	*/
 
      
     }

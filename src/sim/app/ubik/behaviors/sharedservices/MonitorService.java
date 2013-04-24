@@ -61,10 +61,11 @@ public class MonitorService implements Steppable, Stoppable {
         
          String line = System.getProperty("line.separator");
         List<SharedService> listss = SharedService.getServices(ubik, 0);
+        text="";
         for (SharedService serv : listss) {
             ArrayList<UserInterface> users = serv.getUsers();
             if (users.size()>=2) {//si no hay al menos dos usuarios no hay conflicto
-                text="";
+                
                 //actualizar datos del monitor
                 momentOfConflict=1;
                 text += serv.getName() + " shared, current configuration: " + serv.getCurrentConfiguration() + ", configurations: " + Arrays.toString( serv.getConfigurations()) + line;
