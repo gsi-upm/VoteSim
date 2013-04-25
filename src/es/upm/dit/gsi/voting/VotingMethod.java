@@ -6,6 +6,12 @@ import sim.app.ubik.behaviors.sharedservices.UserInterface;
 import sim.app.ubik.domoticDevices.SharedService;
 import sim.util.MutableInt2D;
 
+
+/**
+ * 
+ * @author Pablo Moncada Isla pmoncada@dit.upm.es
+ *
+ */
 public abstract class VotingMethod {
 	SharedService css;
 	String selectedConfiguration;
@@ -160,6 +166,7 @@ public abstract class VotingMethod {
     /** 
      * If there there is a draw it will return number bigger than zero.
      * The returned number means how many configurations are at the first position.
+     * @author pmoncada
      * @return
      */
     public int getDrawCount() {
@@ -194,6 +201,8 @@ public abstract class VotingMethod {
 	public void setOrderedVotes(ArrayList<MutableInt2D> orderedVotes) {
 		this.orderedVotes = orderedVotes;
 	}
+	
+	
 	
 	 
 	

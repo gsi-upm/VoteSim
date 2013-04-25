@@ -31,8 +31,11 @@ public class MonitorService implements Steppable, Stoppable {
 
     
     
-    public MutableDouble satisfactionPerUsers = new MutableDouble(0);    
+    public MutableDouble satisfactionPerUsers = new MutableDouble(0);   
     public MutableDouble satisfactionAccumulated= new MutableDouble(0);
+    public float globalSatisfaction = 0;
+    public float globalSatisfactionAccumulated;
+    private int step;
     public MutableDouble usersWithAcceptableConfigurations= new MutableDouble(0);
     public MutableDouble usersWithAcceptableConfigurationsAccumulated= new MutableDouble(0);
     public MutableDouble momentsOfConflict = new MutableDouble(0);    
@@ -50,11 +53,14 @@ public class MonitorService implements Steppable, Stoppable {
  
     }
 
+
     public void step(SimState ss) {
 
          //actualizar lista de momentos de conflicto y contadores de satisfaccion
         float satisfactionCounter = 0;
         int momentOfConflict=0;//flag, 1 menas that there have been a conflict
+        globalSatisfaction = 0;
+        step++;
         
         int usersWithAcceptableConfigurationsCounter=0;
         int numberOfUsers = 0;
@@ -64,8 +70,7 @@ public class MonitorService implements Steppable, Stoppable {
         text="";
         for (SharedService serv : listss) {
             ArrayList<UserInterface> users = serv.getUsers();
-            if (users.size()>=2) {//si no hay al menos dos usuarios no hay conflicto
-                
+            if (users.size()>=2) {//si no hay al menos dos usuarios no hay conflicto                
                 //actualizar datos del monitor
                 momentOfConflict=1;
                 text += serv.getName() + " shared, current configuration: " + serv.getCurrentConfiguration() + ", configurations: " + Arrays.toString( serv.getConfigurations()) + line;
@@ -74,22 +79,43 @@ public class MonitorService implements Steppable, Stoppable {
                 for (UserInterface ui : users) {
                     text += "\t" + ui.getName();                
                     text += ", o.pref. : " + ui.getNegotiation().orderedPreferencesToString(serv) + line;
-                    satisfactionCounter += ui.getNegotiation().getSatisfaction(serv);
+                    satisfactionCounter += ui.getNegotiation().getUserSatisfaction(serv);
                     if(ui.getNegotiation().isAcceptable(serv.getCurrentConfiguration(), serv,false)) usersWithAcceptableConfigurationsCounter++; 
                 }
+                
                 numberOfUsersUsingServices=numberOfUsers;
                 text += line + line;
+                //System.out.println("Max satisfaction: "+Negotiation.getMaxSatisfaction(serv)+"/"+(serv.getUsers().size()*10)+" for service "+serv.getName());
                 
             }
+            globalSatisfaction += serv.getServiceSatisfaction();
+            
         }
+        globalSatisfaction = globalSatisfaction/listss.size();
+        
+        if(!Float.isNaN(globalSatisfaction))
+        	globalSatisfactionAccumulated = globalSatisfactionAccumulated + globalSatisfaction;
+        
+        
+        
+        
         
         if(momentOfConflict==1 ){
+        	
+        	System.out.println("");
+            System.out.println("SAS: "+globalSatisfaction);
+            System.out.println("Accumulated SAS: "+globalSatisfactionAccumulated/step);
          
            
-           satisfactionPerUsers.val =   satisfactionCounter / ((double) numberOfUsers);  
-         
-           satisfactionAccumulated.val = satisfactionAccumulated.val +  satisfactionPerUsers.val;
             
+           //satisfactionPerUsers.val =   satisfactionCounter / ((double) numberOfUsers);  
+            
+            satisfactionPerUsers.val  = globalSatisfaction;
+         
+           //satisfactionAccumulated.val = satisfactionAccumulated.val +  satisfactionPerUsers.val;
+           
+           satisfactionAccumulated.val = globalSatisfactionAccumulated;
+           
            usersWithAcceptableConfigurations.val =  usersWithAcceptableConfigurationsCounter / ((double) numberOfUsers);
            usersWithAcceptableConfigurationsAccumulated.val +=  usersWithAcceptableConfigurations.val ;                       
             

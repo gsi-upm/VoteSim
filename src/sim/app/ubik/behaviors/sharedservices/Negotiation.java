@@ -25,7 +25,7 @@ public class Negotiation {
      * 0: first agent configurates service 1: decision voting; 2:
      */
     protected static int codeOfNegotiation = 1;
-    protected static int codeOfSatisfactionFunction = 0;
+    public static int codeOfSatisfactionFunction = 0;
     protected static boolean echo = true;
 
  
@@ -67,22 +67,93 @@ public class Negotiation {
             p.put(ss.getConfigurations()[i], user.getUbik().random.nextInt(upperBoundForCalification + 1));
         }
 
-
-
         return p;
     }
 
     
-    public float getSatisfaction(SharedService ss) {
+    
+    /**
+     * Mira la nota que le da el usuario a la configuración que ha sido seleccionada
+     * @param ss
+     * @return
+     */
+    public float getUserSatisfaction(SharedService ss) {
       int preferenceForService=getPreferences(ss).get(ss.getCurrentConfiguration()).intValue();
-      if(codeOfSatisfactionFunction==0)  return preferenceForService;
-      if(codeOfSatisfactionFunction>0){
-           if(preferenceForService<=4) return 0;
-           if(preferenceForService>4 && preferenceForService<=7) return 5;
-           if(preferenceForService>7) return 10;
-       }
-       return 0;
+      return calculateSatisfaction(preferenceForService);
     }
+    
+    
+    
+    /**
+     * Mira la nota que le da el usuario a una configuración dada
+     * @param ss
+     * @param configuration configuración para la que se quiere mirar la satisfacción
+     * @author pmoncada
+     * @return
+     */
+    public float getUserSatisfaction(SharedService ss, String configuration) {
+      int preferenceForService=getPreferences(ss).get(configuration).intValue();      
+      return calculateSatisfaction(preferenceForService);
+    }
+
+    
+    /**
+     * @author pmoncada
+     * @param preferenceForService
+     * @return
+     */
+    public float calculateSatisfaction(int preferenceForService) {
+    	if(codeOfSatisfactionFunction==0)  return preferenceForService;
+        if(codeOfSatisfactionFunction>0){
+             if(preferenceForService<=4) return 0;
+             if(preferenceForService>4 && preferenceForService<=7) return 5;
+             if(preferenceForService>7) return 10;
+         }
+        return 0;
+    }
+    
+    /**
+     * Devuelve la satisfacción que genera la configuración elegida para un servicio
+     * @param css
+     * @author pmoncada
+     * @return 
+     */
+    public static float getSatisfaction(SharedService css) {
+    	float confSatisfaction = 0;
+		for (UserInterface ui : css.getUsers()) {
+			confSatisfaction += ui.getNegotiation().getUserSatisfaction(css);				
+		}
+		
+    	return confSatisfaction;
+    }
+    
+    
+	
+
+	
+	/**
+	 * Calculates all satisfaction for all configurations and returns 
+	 * the maximun
+	 * @author pmoncada
+	 * @return Max satisfaction
+	 */
+	public static float getMaxSatisfaction(SharedService css) {
+		float maxSatisfaction = 0;
+		
+		for (String conf : css.getConfigurations()) {
+			float confSatisfaction = 0;
+			for (UserInterface ui : css.getUsers()) {
+				confSatisfaction += ui.getNegotiation().getUserSatisfaction(css, conf);				
+			}
+			if(confSatisfaction > maxSatisfaction)
+				maxSatisfaction = confSatisfaction;
+		}
+		
+		return maxSatisfaction;
+		
+	}
+    
+    
 
     public HashMap<String, Integer> getPreferences(SharedService ss) {
         if (preferences == null) {
@@ -329,6 +400,8 @@ public class Negotiation {
         }
         return counter;
     }
+    
+    
 
 
 }
