@@ -31,7 +31,7 @@ public class UsingSharedService extends SimpleState {
     protected UserInterface user;
     public static int selectionCode=0;//código de selección de servicio
     
-    protected static int codeOfNegotiation = 1;
+    protected static int codeOfNegotiation = 0;
     public static int codeOfSatisfactionFunction = 0;
     protected static boolean echo = true;
              
