@@ -1,7 +1,7 @@
 package sim.app.ubik.people;
 
 import sim.app.ubik.Ubik;
-import sim.app.ubik.behaviors.sharedservices.Negotiation;
+import sim.app.ubik.behaviors.sharedservices.Preferences;
 import sim.app.ubik.behaviors.sharedservices.UserInterface;
 import sim.app.ubik.building.SpaceArea;
 import sim.app.ubik.building.connectionSpace.Door;
@@ -19,13 +19,13 @@ public class TestPerson extends Person implements UserInterface {
 
    protected Room initialPosition=null; //
   
-   protected Negotiation neg;
+   protected Preferences neg;
 
     public TestPerson(int floor, HomePieceOfFurniture w, Ubik ubik) { 
       
         super(floor, w, ubik);        
         this.speed=0.5;            
-        neg = new Negotiation(this);
+        neg = new Preferences(this);
 
     }
     @Override
@@ -79,7 +79,7 @@ public class TestPerson extends Person implements UserInterface {
    
 
 
-    public Negotiation getNegotiation() {
+    public Preferences getNegotiation() {
         return neg;
     }
 

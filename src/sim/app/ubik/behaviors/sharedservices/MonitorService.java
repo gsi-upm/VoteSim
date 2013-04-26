@@ -35,7 +35,7 @@ public class MonitorService implements Steppable, Stoppable {
     public MutableDouble satisfactionAccumulated= new MutableDouble(0);
     public float globalSatisfaction = 0;
     public float globalSatisfactionAccumulated;
-    private int step;
+    private static int step;
     public MutableDouble usersWithAcceptableConfigurations= new MutableDouble(0);
     public MutableDouble usersWithAcceptableConfigurationsAccumulated= new MutableDouble(0);
     public MutableDouble momentsOfConflict = new MutableDouble(0);    
@@ -79,21 +79,22 @@ public class MonitorService implements Steppable, Stoppable {
                 for (UserInterface ui : users) {
                     text += "\t" + ui.getName();                
                     text += ", o.pref. : " + ui.getNegotiation().orderedPreferencesToString(serv) + line;
-                    satisfactionCounter += ui.getNegotiation().getUserSatisfaction(serv);
+                    //satisfactionCounter += ui.getNegotiation().getUserSatisfaction(serv);
+                    satisfactionCounter += serv.getUserSatisfaction(ui);
                     if(ui.getNegotiation().isAcceptable(serv.getCurrentConfiguration(), serv,false)) usersWithAcceptableConfigurationsCounter++; 
                 }
                 
                 numberOfUsersUsingServices=numberOfUsers;
                 text += line + line;
                 //System.out.println("Max satisfaction: "+Negotiation.getMaxSatisfaction(serv)+"/"+(serv.getUsers().size()*10)+" for service "+serv.getName());
-                
+                globalSatisfaction += serv.getNormServSas();    
             }
-            globalSatisfaction += serv.getServiceSatisfaction();
+            
             
         }
         globalSatisfaction = globalSatisfaction/listss.size();
         
-        if(!Float.isNaN(globalSatisfaction))
+        if(!Float.isNaN(globalSatisfaction) && globalSatisfaction <= 1)
         	globalSatisfactionAccumulated = globalSatisfactionAccumulated + globalSatisfaction;
         
         
@@ -103,6 +104,8 @@ public class MonitorService implements Steppable, Stoppable {
         if(momentOfConflict==1 ){
         	
         	System.out.println("");
+        	
+        	System.out.println("Step: "+step);
             System.out.println("SAS: "+globalSatisfaction);
             System.out.println("Accumulated SAS: "+globalSatisfactionAccumulated/step);
          

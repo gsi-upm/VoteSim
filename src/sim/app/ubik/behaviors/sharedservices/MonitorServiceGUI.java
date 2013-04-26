@@ -6,6 +6,7 @@ package sim.app.ubik.behaviors.sharedservices;
 
 import sim.app.ubik.Ubik;
 import sim.app.ubik.chart.GenericChart;
+import sim.app.ubik.domoticDevices.SharedService;
 import sim.app.ubik.people.PersonHandler;
 import sim.display.GUIState;
 import sim.engine.SimState;
@@ -105,7 +106,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Parameters"));
 
-        jLabel4.setText("Negotiation ");
+        jLabel4.setText("Voting Method ");
 
         jcomboneg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Order of arrival", "Range Voting ", "Range Voting + acceptable for all", "Plurality Voting", "Cumulative Voting", "Approval Voting", "Borda Voting" }));
         jcomboneg.addActionListener(new java.awt.event.ActionListener() {
@@ -340,7 +341,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcombonegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombonegActionPerformed
-        Negotiation.setCodeOfNegotiation(jcomboneg.getSelectedIndex());
+        UsingSharedService.setCodeOfNegotiation(jcomboneg.getSelectedIndex());
         clearLogs();
     }//GEN-LAST:event_jcombonegActionPerformed
 
@@ -425,7 +426,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
     public void step(SimState ss) {
         if(!this.extraInitDone){
              
-            jcomboneg.setSelectedIndex(Negotiation.codeOfNegotiation);           
+            jcomboneg.setSelectedIndex(UsingSharedService.codeOfNegotiation);           
             jSpinnerAgents.getModel().setValue(ubik.getBuilding().getFloor(0).getPersonHandler().getPersons().size());
             extraInitDone=true;
         }

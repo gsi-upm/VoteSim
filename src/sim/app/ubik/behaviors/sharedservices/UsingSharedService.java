@@ -5,6 +5,14 @@
 
 package sim.app.ubik.behaviors.sharedservices;
 
+import es.upm.dit.gsi.voting.AcceptableForAllMethod;
+import es.upm.dit.gsi.voting.ApprovalVotingMethod;
+import es.upm.dit.gsi.voting.BordaVotingMethod;
+import es.upm.dit.gsi.voting.CumulativeVotingMethod;
+import es.upm.dit.gsi.voting.FirstArrivalMethod;
+import es.upm.dit.gsi.voting.PluralityVotingMethod;
+import es.upm.dit.gsi.voting.RangeVotingMethod;
+import es.upm.dit.gsi.voting.VotingMethod;
 import sim.app.ubik.behaviors.PositionTools;
 import sim.app.ubik.behaviors.SimpleState;
 import sim.app.ubik.building.rooms.Room;
@@ -22,6 +30,10 @@ public class UsingSharedService extends SimpleState {
      protected SharedService css;// current shared service
     protected UserInterface user;
     public static int selectionCode=0;//código de selección de servicio
+    
+    protected static int codeOfNegotiation = 1;
+    public static int codeOfSatisfactionFunction = 0;
+    protected static boolean echo = true;
              
      public UsingSharedService(Person personImplementingAutomaton, int priority, int duration, String name) {
          super(personImplementingAutomaton, priority, duration, name);     
@@ -78,7 +90,8 @@ public class UsingSharedService extends SimpleState {
 
     private void stopUsingService() {
             css.removeUser(user);
-            user.getNegotiation().negotiate(css);  
+            //user.getNegotiation().negotiate(css);
+            this.vote(css);
     }
 
     private void startUsingService() {
@@ -88,9 +101,79 @@ public class UsingSharedService extends SimpleState {
         //compruebo que uesté en la habitación
         if(css!=null && !css.isUser(user) && SharedService.isInRoom(css, personImplementingAutomaton)) {
             css.addUser(this.user);   
-            user.getNegotiation().negotiate(css);            
+            //user.getNegotiation().negotiate(css);
+            this.vote(css);
         }
     }
+    
+ public void vote(SharedService css) {
+    	
+    	VotingMethod vm = null;
+    	
+        if (css.getUsers().isEmpty()) {
+            return;
+        }
+
+        if (css.getUsers().size() == 1) {
+            css.setConfiguration(user.getNegotiation().getNextPreference(user, css, 0));
+            return;
+        }
+        
+        System.out.println("Code of Negotiation="+codeOfNegotiation);
+        
+        if (codeOfNegotiation == 0) 
+        	vm = new FirstArrivalMethod(css);
+        
+        else if (codeOfNegotiation == 1) 
+        	vm = new RangeVotingMethod(css);
+        
+        else if (codeOfNegotiation == 2) 
+        	vm = new AcceptableForAllMethod(css);
+        
+        else if (codeOfNegotiation == 3) 
+        	vm = new PluralityVotingMethod(css);
+        
+        else if (codeOfNegotiation == 4) 
+        	vm = new CumulativeVotingMethod(css);
+        
+        else if (codeOfNegotiation == 5) 
+        	vm = new ApprovalVotingMethod(css);
+        
+        else if (codeOfNegotiation == 6) 
+        	vm = new BordaVotingMethod(css);
+        
+        System.out.println(vm.userPreferencesToString());
+        css.setConfiguration(vm.getSelectedConfiguration());
+        
+        /*
+        if(vm.isDraw())
+        	System.out.println("Ha habido empate de" +vm.getDrawCount()+ "preferencias");
+        else
+        	System.out.println("No hay empate");
+        	
+        	*/
+
+     
+    }
+ 
+	 public static void setCodeOfSatisfactionFuction(int c) {
+	     UsingSharedService.codeOfSatisfactionFunction = c;
+	 }
+	
+	   public static int getCodeOfSatisfactionFuction() {
+	     return UsingSharedService.codeOfSatisfactionFunction;
+	 }
+	 
+	     
+	     
+	 public static void setCodeOfNegotiation(int c) {
+		 UsingSharedService.codeOfNegotiation = c;
+	 }
+	 
+	  public static int getCodeOfNegotiation() {
+	    return codeOfNegotiation;
+	 }
+
     
     
         

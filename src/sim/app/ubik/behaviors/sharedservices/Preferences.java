@@ -13,20 +13,15 @@ import sim.app.ubik.domoticDevices.SharedService;
 import sim.util.MutableInt2D;
 
 /**
- * Objeto con información acerca de negociaciones así como las preferencias de
+ * Objeto con información acerca las preferencias de 
  * cada agente para un servicio concreto. Los agentes podrían tener un hashMap
  * asociando una instancia a cada tipo de servicio.
  *
  * @author Emilio Serrano, emilioserra@um.es
  */
-public class Negotiation {
+public class Preferences {
 
-    /**
-     * 0: first agent configurates service 1: decision voting; 2:
-     */
-    protected static int codeOfNegotiation = 1;
-    public static int codeOfSatisfactionFunction = 0;
-    protected static boolean echo = true;
+    public static boolean echo = true;
 
  
     protected UserInterface user;
@@ -51,7 +46,7 @@ public class Negotiation {
         echo=b;
     }
  
-    public Negotiation(UserInterface u) {
+    public Preferences(UserInterface u) {
         this.user = u;
     }
 
@@ -70,91 +65,7 @@ public class Negotiation {
         return p;
     }
 
-    
-    
-    /**
-     * Mira la nota que le da el usuario a la configuración que ha sido seleccionada
-     * @param ss
-     * @return
-     */
-    public float getUserSatisfaction(SharedService ss) {
-      int preferenceForService=getPreferences(ss).get(ss.getCurrentConfiguration()).intValue();
-      return calculateSatisfaction(preferenceForService);
-    }
-    
-    
-    
-    /**
-     * Mira la nota que le da el usuario a una configuración dada
-     * @param ss
-     * @param configuration configuración para la que se quiere mirar la satisfacción
-     * @author pmoncada
-     * @return
-     */
-    public float getUserSatisfaction(SharedService ss, String configuration) {
-      int preferenceForService=getPreferences(ss).get(configuration).intValue();      
-      return calculateSatisfaction(preferenceForService);
-    }
-
-    
-    /**
-     * @author pmoncada
-     * @param preferenceForService
-     * @return
-     */
-    public float calculateSatisfaction(int preferenceForService) {
-    	if(codeOfSatisfactionFunction==0)  return preferenceForService;
-        if(codeOfSatisfactionFunction>0){
-             if(preferenceForService<=4) return 0;
-             if(preferenceForService>4 && preferenceForService<=7) return 5;
-             if(preferenceForService>7) return 10;
-         }
-        return 0;
-    }
-    
-    /**
-     * Devuelve la satisfacción que genera la configuración elegida para un servicio
-     * @param css
-     * @author pmoncada
-     * @return 
-     */
-    public static float getSatisfaction(SharedService css) {
-    	float confSatisfaction = 0;
-		for (UserInterface ui : css.getUsers()) {
-			confSatisfaction += ui.getNegotiation().getUserSatisfaction(css);				
-		}
-		
-    	return confSatisfaction;
-    }
-    
-    
-	
-
-	
-	/**
-	 * Calculates all satisfaction for all configurations and returns 
-	 * the maximun
-	 * @author pmoncada
-	 * @return Max satisfaction
-	 */
-	public static float getMaxSatisfaction(SharedService css) {
-		float maxSatisfaction = 0;
-		
-		for (String conf : css.getConfigurations()) {
-			float confSatisfaction = 0;
-			for (UserInterface ui : css.getUsers()) {
-				confSatisfaction += ui.getNegotiation().getUserSatisfaction(css, conf);				
-			}
-			if(confSatisfaction > maxSatisfaction)
-				maxSatisfaction = confSatisfaction;
-		}
-		
-		return maxSatisfaction;
-		
-	}
-    
-    
-
+     
     public HashMap<String, Integer> getPreferences(SharedService ss) {
         if (preferences == null) {
             preferences = getRandomPreferences(ss);
@@ -270,77 +181,6 @@ public class Negotiation {
 
         return ordered;
     }
-
-
-
-
-   public static void setCodeOfSatisfactionFuction(int c) {
-        Negotiation.codeOfSatisfactionFunction = c;
-    }
-   
-      public static int getCodeOfSatisfactionFuction() {
-        return Negotiation.codeOfSatisfactionFunction;
-    }
-    
-        
-        
-    public static void setCodeOfNegotiation(int c) {
-        Negotiation.codeOfNegotiation = c;
-    }
-    
-     public static int getCodeOfNegotiation() {
-       return codeOfNegotiation;
-    }
-
-    public void negotiate(SharedService css) {
-    	
-    	VotingMethod vm = null;
-    	
-        if (css.getUsers().isEmpty()) {
-            return;
-        }
-
-        if (css.getUsers().size() == 1) {
-            css.setConfiguration(getNextPreference(user, css, 0));
-            return;
-        }
-        
-        if (codeOfNegotiation == 0) 
-        	vm = new FirstArrivalMethod(css);
-        
-        else if (codeOfNegotiation == 1) 
-        	vm = new RangeVotingMethod(css);
-        
-        else if (codeOfNegotiation == 2) 
-        	vm = new AcceptableForAllMethod(css);
-        
-        else if (codeOfNegotiation == 3) 
-        	vm = new PluralityVotingMethod(css);
-        
-        else if (codeOfNegotiation == 4) 
-        	vm = new CumulativeVotingMethod(css);
-        
-        else if (codeOfNegotiation == 5) 
-        	vm = new ApprovalVotingMethod(css);
-        
-        else if (codeOfNegotiation == 6) 
-        	vm = new BordaVotingMethod(css);
-        
-        System.out.println(vm.userPreferencesToString());
-        css.setConfiguration(vm.getSelectedConfiguration());
-        
-        /*
-        if(vm.isDraw())
-        	System.out.println("Ha habido empate de" +vm.getDrawCount()+ "preferencias");
-        else
-        	System.out.println("No hay empate");
-        	
-        	*/
-
-     
-    }
-
-
 
     /**
      * Aceptable si tiene nota media, cada agente puede tener una extensión de

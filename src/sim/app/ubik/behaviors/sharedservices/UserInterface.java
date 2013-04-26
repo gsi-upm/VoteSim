@@ -17,5 +17,5 @@ public interface UserInterface {
     public void setColor(Color c);     
     public String getName();
     public Ubik getUbik();
-    public Negotiation getNegotiation();
+    public Preferences getNegotiation();
 }

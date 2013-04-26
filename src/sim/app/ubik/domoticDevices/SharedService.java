@@ -11,8 +11,9 @@ import java.util.List;
 
 import sim.app.ubik.Ubik;
 import sim.app.ubik.behaviors.PositionTools;
-import sim.app.ubik.behaviors.sharedservices.Negotiation;
+import sim.app.ubik.behaviors.sharedservices.Preferences;
 import sim.app.ubik.behaviors.sharedservices.UserInterface;
+import sim.app.ubik.behaviors.sharedservices.UsingSharedService;
 import sim.app.ubik.building.rooms.Room;
 import sim.app.ubik.people.Person;
 import sim.util.Int2D;
@@ -32,6 +33,7 @@ public abstract class SharedService extends FixedDomoticDevice {
 	protected static int lastIndexColor = 0;
 	protected Color color;
 	protected Ubik ubik;
+	
 
 	/**
 	 * Configuración del serivcio actual
@@ -205,8 +207,8 @@ public abstract class SharedService extends FixedDomoticDevice {
      * @return
      */
     public float calculateSatisfaction(int preferenceForService) {
-    	if(Negotiation.codeOfSatisfactionFunction==0)  return preferenceForService;
-        if(Negotiation.codeOfSatisfactionFunction>0){
+    	if(UsingSharedService.codeOfSatisfactionFunction==0)  return preferenceForService;
+        if(UsingSharedService.codeOfSatisfactionFunction>0){
              if(preferenceForService<=4) return 0;
              if(preferenceForService>4 && preferenceForService<=7) return 5;
              if(preferenceForService>7) return 10;
@@ -230,6 +232,21 @@ public abstract class SharedService extends FixedDomoticDevice {
     }
     
     /**
+     * Devuelve la satisfacción que genera una configuración cualquiera
+     * @param css
+     * @author pmoncada
+     * @return 
+     */
+    public float getSatisfaction(String configuration) {
+    	float confSatisfaction = 0;
+		for (UserInterface ui : this.getUsers()) {
+			confSatisfaction += this.getUserSatisfaction(ui, configuration);				
+		}
+		
+    	return confSatisfaction;
+    }
+    
+    /**
 	 * Calculates all satisfaction for all configurations and returns 
 	 * the maximun
 	 * @author pmoncada
@@ -239,25 +256,67 @@ public abstract class SharedService extends FixedDomoticDevice {
 		float maxSatisfaction = 0;
 		
 		for (String conf : this.getConfigurations()) {
-			float confSatisfaction = 0;
-			for (UserInterface ui : this.getUsers()) {
-				confSatisfaction += this.getUserSatisfaction(ui, conf);				
-			}
-			if(confSatisfaction > maxSatisfaction)
-				maxSatisfaction = confSatisfaction;
+			float confSatisfaction = getSatisfaction(conf);
+			if(confSatisfaction > maxSatisfaction)	
+				maxSatisfaction = confSatisfaction;			
+
 		}
+		if(Preferences.echo)
+			System.out.println("maxSatisfaction="+maxSatisfaction);
 		
 		return maxSatisfaction;
 		
 	}
 	
 	/**
+	 * Calculates all satisfaction for all configurations and returns 
+	 * the minimum
+	 * @author pmoncada
+	 * @return Min satisfaction
+	 */
+	public float getMinSatisfaction() {
+		float minSatisfaction = Float.MAX_VALUE;
+		
+		for (String conf : this.getConfigurations()) {
+			float confSatisfaction = getSatisfaction(conf);
+			if(confSatisfaction < minSatisfaction)	
+				minSatisfaction = confSatisfaction;			
+
+		}
+		
+		if(Preferences.echo)
+			System.out.println("minSatisfaction="+minSatisfaction);
+			
+		return minSatisfaction;
+		
+	}	
+	/**
 	 * Función SAS definida por Emilio
 	 * @author pmoncada
 	 * @return
 	 */
 	public float getServiceSatisfaction() {
-		return (this.getSatisfaction()/this.getMaxSatisfaction())/this.getUsers().size();
+		float servSatisfaction = this.getSatisfaction();
+		
+		if(Preferences.echo)
+			System.out.println("servSatisfaction="+servSatisfaction);
+		
+		return servSatisfaction;
+	}
+	
+	/**
+	 * Normalizando servSas (con proporcion del rango) obtenemos la satisfaccion del servicio normalizada
+	 * @author pmoncada
+	 * @return Satisfaccion normalizada
+	 */
+	public float getNormServSas() {
+		float minSatisfaction = getMinSatisfaction();
+		float normServSas = (getServiceSatisfaction()-minSatisfaction)/(getMaxSatisfaction()-minSatisfaction);
+		
+		if(Preferences.echo)
+			System.out.println("normServSas="+normServSas+"\n");
+		
+		return normServSas;
 	}
 
 }

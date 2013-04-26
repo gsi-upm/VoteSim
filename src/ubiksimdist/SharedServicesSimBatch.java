@@ -15,7 +15,7 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
-import sim.app.ubik.behaviors.sharedservices.Negotiation;
+import sim.app.ubik.behaviors.sharedservices.Preferences;
 import sim.app.ubik.behaviors.sharedservices.UsingSharedService;
 import sim.app.ubik.utils.GenericLogger;
 
@@ -53,11 +53,11 @@ public class SharedServicesSimBatch {
         for (int i = 0; i < 2; i++) {//cada función de satisfacción hasta i 2
             for (int j = 0; j < 3; j++) {//cada preselección, hasta j3
                 for (int z = 0; z < 4; z++) {//cada negociacion, hsata z 4
-                    Negotiation.setCodeOfSatisfactionFuction(i);
+                    UsingSharedService.setCodeOfSatisfactionFuction(i);
                     UsingSharedService.selectionCode = j;
-                    Negotiation.setCodeOfNegotiation(z);
+                    UsingSharedService.setCodeOfNegotiation(z);
                     r.addAll(batchOfExperiments());
-                    String heading = "satis.function " + Negotiation.getCodeOfSatisfactionFuction() + " preselection " + UsingSharedService.selectionCode + " negotiation " + Negotiation.getCodeOfNegotiation();
+                    String heading = "satis.function " + UsingSharedService.getCodeOfSatisfactionFuction() + " preselection " + UsingSharedService.selectionCode + " negotiation " + UsingSharedService.getCodeOfNegotiation();
                     PrintWriter w3 = new PrintWriter(new BufferedWriter(new FileWriter(fileName + " output.txt", true)));
                     w3.println( heading + " " + (new Date()).toString());
                     w3.close();
@@ -103,7 +103,7 @@ public class SharedServicesSimBatch {
      * @return
      */
     public static GenericLogger oneExperiment(int seed) {
-       Negotiation.setEcho(false); 
+       Preferences.setEcho(false); 
        SharedServicesSim state = new SharedServicesSim(seed,timeForExperiment );
         state.start();
         do{
