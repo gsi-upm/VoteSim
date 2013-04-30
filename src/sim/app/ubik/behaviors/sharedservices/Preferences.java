@@ -21,7 +21,7 @@ import sim.util.MutableInt2D;
  */
 public class Preferences {
 
-    public static boolean echo = true;
+    public static boolean echo = false;
 
  
     protected UserInterface user;
@@ -141,7 +141,7 @@ public class Preferences {
      * @param css
      * @return
      */
-    protected ArrayList<MutableInt2D> votingConfigurations(SharedService css) {
+    public static ArrayList<MutableInt2D> votingConfigurations(SharedService css) {
 
         String configurations[] = css.getConfigurations();
         ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
@@ -166,7 +166,7 @@ public class Preferences {
      * @param votes
      * @return
      */
-    protected ArrayList<MutableInt2D> orderPreferences(ArrayList<MutableInt2D> preferences) {
+    public static ArrayList<MutableInt2D> orderPreferences(ArrayList<MutableInt2D> preferences) {
         ArrayList<MutableInt2D> ordered = (ArrayList<MutableInt2D>) preferences.clone();
         MutableInt2D aux;
         for (int i = 1; i < ordered.size(); i++) {
