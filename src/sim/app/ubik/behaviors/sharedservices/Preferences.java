@@ -7,10 +7,12 @@ package sim.app.ubik.behaviors.sharedservices;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import es.upm.dit.gsi.voting.*;
+import weka.core.Instances;
 
 import sim.app.ubik.domoticDevices.SharedService;
 import sim.util.MutableInt2D;
+
+import weka.core.converters.ConverterUtils.DataSource;
 
 /**
  * Objeto con información acerca las preferencias de 
@@ -85,6 +87,7 @@ public class Preferences {
         for (int i = 0; i < conf.length; i++) {
             r.add(new MutableInt2D(i, this.getPreferences(ss).get(conf[i])));
         }
+      
         return this.orderPreferences(r);
     }
 
@@ -130,8 +133,12 @@ public class Preferences {
      * @param i 0 la favorita, 1 la segunda...
      * @return
      */
-    public String getNextPreference(UserInterface ui, SharedService s, int i) {
+    public static String getNextPreference(UserInterface ui, SharedService s, int i) {
         return s.getConfigurations()[ui.getNegotiation().getOrderedPreferences(s).get(i).x];
+    }
+    
+    public static int getPreferenceValueByKey(UserInterface ui, SharedService s, String key) {    	
+    	return ui.getNegotiation().getPreferences(s).get(key);
     }
 
     /**
@@ -240,6 +247,7 @@ public class Preferences {
         }
         return counter;
     }
+
     
     
 

@@ -88,9 +88,10 @@ public class UsingSharedService extends SimpleState {
     }
 
     private SharedService suggestSharedService() {
-         if(selectionCode==0) return SharedService.closestSharedService(this.personImplementingAutomaton,true);
-         if(selectionCode==1) return SharedService.serviceWithMoreCommonWantedConfigurations((UserInterface) this.personImplementingAutomaton);
-         if(selectionCode==2)  return  (new Clustering(this.personImplementingAutomaton.getUbik())).getRecommendation(user);                            
+         if(selectionCode==0) return Preselection.closestSharedService(this.personImplementingAutomaton,true);
+         if(selectionCode==1) return Preselection.serviceWithMoreCommonWantedConfigurations((UserInterface) this.personImplementingAutomaton);
+         if(selectionCode==2)  return  (new Clustering(this.personImplementingAutomaton.getUbik())).getRecommendation(user);   
+         if(selectionCode==3)  return  Preselection.euclideanDistance((UserInterface) this.personImplementingAutomaton); 
          return null;
     }
 
@@ -105,7 +106,7 @@ public class UsingSharedService extends SimpleState {
         //comrpobar si está en la misma habitación, si no, null
         Room r=PositionTools.getRoom(personImplementingAutomaton);        
         //compruebo que uesté en la habitación
-        if(css!=null && !css.isUser(user) && SharedService.isInRoom(css, personImplementingAutomaton)) {
+        if(css!=null && !css.isUser(user) && Preselection.isInRoom(css, personImplementingAutomaton)) {
             css.addUser(this.user);   
             //user.getNegotiation().negotiate(css);
             if(enableNegotationByWeight == true)
