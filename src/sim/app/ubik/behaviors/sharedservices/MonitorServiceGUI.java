@@ -108,7 +108,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
 
         jLabel4.setText("Voting Method ");
 
-        jcomboneg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Order of arrival", "Range Voting ", "Range Voting + acceptable for all", "Plurality Voting", "Cumulative Voting", "Approval Voting", "Borda Voting" }));
+        jcomboneg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Order of arrival", "Range Voting ", "Range Voting + acceptable for all", "Plurality Voting", "Cumulative Voting", "Approval Voting", "Borda Voting", "Weight Negotiation" }));
         jcomboneg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombonegActionPerformed(evt);

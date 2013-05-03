@@ -7,12 +7,10 @@ package sim.app.ubik.behaviors.sharedservices;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import weka.core.Instances;
 
 import sim.app.ubik.domoticDevices.SharedService;
 import sim.util.MutableInt2D;
 
-import weka.core.converters.ConverterUtils.DataSource;
 
 /**
  * Objeto con información acerca las preferencias de 
@@ -36,9 +34,33 @@ public class Preferences {
      * A configuration is wanted if its the number wantedcriteria or less in the ranking of favourite configurations
      */
     protected int wantedcriteria=3;
-    protected int weightInNegotiation = upperBoundForCalification;
+    public int weightInNegotiation = upperBoundForCalification;
     
-    /**
+    public int getUpperBoundForCalification() {
+		return upperBoundForCalification;
+	}
+
+	public void setUpperBoundForCalification(int upperBoundForCalification) {
+		this.upperBoundForCalification = upperBoundForCalification;
+	}
+
+	public int getWantedcriteria() {
+		return wantedcriteria;
+	}
+
+	public void setWantedcriteria(int wantedcriteria) {
+		this.wantedcriteria = wantedcriteria;
+	}
+
+	public int getWeightInNegotiation() {
+		return weightInNegotiation;
+	}
+
+	public void setWeightInNegotiation(int weightInNegotiation) {
+		this.weightInNegotiation = weightInNegotiation;
+	}
+
+	/**
      * Variable que, actualizada desde fuera, permite llevar la cuenta del tiempo que un agente espera
      * a tener un servicio querido.
      */
