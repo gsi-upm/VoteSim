@@ -26,11 +26,12 @@ import sim.app.ubik.utils.GenericLogger;
  */
 public class SharedServicesSimBatch {
 
-    static int experiments = 2;
-    static int timeForExperiment = 100;
+    static int experiments = 2; //por ahora pongamos 20
+    static int timeForExperiment = 300;//intentemos a 3000
     static ArrayList<String> headings;
     static String fileName;
-
+    static final int votingMethods=2;
+    static final int preselectionMethods=2;
     public static void main(String[] args) throws IOException {
 
       
@@ -50,14 +51,15 @@ public class SharedServicesSimBatch {
 
         ArrayList<GenericLogger> r = new ArrayList<GenericLogger>();
         headings = new ArrayList<String>();//cabeceras extra para cada generic logger
-        for (int i = 0; i < 2; i++) {//cada función de satisfacción hasta i 2
-            for (int j = 0; j < 3; j++) {//cada preselección, hasta j3
-                for (int z = 0; z < 4; z++) {//cada negociacion, hsata z 4
-                    UsingSharedService.setCodeOfSatisfactionFuction(i);
+       // for (int i = 0; i < 1; i++) {//cada función de satisfacción hasta i 2
+            for (int j = 0; j < preselectionMethods; j++) {//cada preselección, hasta j3
+                for (int z = 0; z < votingMethods; z++) {//cada negociacion, hsata z 4
+                   // UsingSharedService.setCodeOfSatisfactionFuction(i);
                     UsingSharedService.selectionCode = j;
                     UsingSharedService.setCodeOfNegotiation(z);
                     r.addAll(batchOfExperiments());
-                    String heading = "satis.function " + UsingSharedService.getCodeOfSatisfactionFuction() + " preselection " + UsingSharedService.selectionCode + " negotiation " + UsingSharedService.getCodeOfNegotiation();
+                    //"satis.function " + UsingSharedService.getCodeOfSatisfactionFuction() +
+                    String heading =  " preselection " + UsingSharedService.selectionCode + " votingS " + UsingSharedService.getCodeOfNegotiation();
                     PrintWriter w3 = new PrintWriter(new BufferedWriter(new FileWriter(fileName + " output.txt", true)));
                     w3.println( heading + " " + (new Date()).toString());
                     w3.close();
@@ -66,7 +68,7 @@ public class SharedServicesSimBatch {
                     deleteTempFiles();
                  
                 }
-            }
+            //}
         }
         return r;
     }

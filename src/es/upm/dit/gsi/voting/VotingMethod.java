@@ -77,6 +77,8 @@ public abstract class VotingMethod {
     }
 	
 	/**
+     * 
+     * @TODO esto duele a la vista, hay que usar el método de ordenación de Collections
      * Ordena un array de votos o preferencias (mutablesIn2D donde x es la
      * configuracion e y la preferencia/voto (los votos/preferencias estan
      * ligados a ambos ArrayList).
