@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 import sim.app.ubik.domoticDevices.SharedService;
 import sim.util.MutableInt2D;
+import weka.core.Attribute;
+import weka.core.Instance;
 
 
 /**
@@ -269,6 +271,41 @@ public class Preferences {
         }
         return counter;
     }
+    
+    /**
+	 * Método para crear objeto Instance a partir de un hashmap de preferencias
+	 * @param preferences, obtenido de getPreferences, por ejemplo
+	 * @return Preferencias en hashmap
+	 */
+    public Instance getPreferencesInstance(SharedService ss)
+	{
+    	HashMap<String, Integer> preferences = this.getPreferences(ss);
+    	
+		ArrayList<Attribute> atts = new ArrayList<Attribute>();
+
+		for ( String key : preferences.keySet() ) {
+			System.out.println("Creando atributo: "+key);
+		    atts.add(new Attribute(key));
+		}
+
+		// Create empty instance
+		Instance inst = new Instance(preferences.size()+1); 
+		Attribute x = new Attribute("x");
+
+		
+		// Set instance's values for the attributes
+	    for(int i = 0; i<preferences.size();i++) {
+	    	System.out.println("Obteniendo preferencia numero: "+i);
+	    	inst.setValue(x, 0.0);
+	    }
+
+	                 
+	    return inst;    
+	}
+    
+    
+    
+
 
     
     

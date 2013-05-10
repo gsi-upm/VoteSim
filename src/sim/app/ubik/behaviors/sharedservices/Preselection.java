@@ -1,10 +1,21 @@
 package sim.app.ubik.behaviors.sharedservices;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import es.upm.dit.gsi.voting.VotingMethod;
+
 import sim.app.ubik.behaviors.PositionTools;
 import sim.app.ubik.building.rooms.Room;
 import sim.app.ubik.domoticDevices.SharedService;
 import sim.app.ubik.people.Person;
 import sim.util.Int2D;
+import sim.util.MutableInt2D;
+import weka.core.Attribute;
+import weka.core.EuclideanDistance;
+import weka.core.FastVector;
+import weka.core.Instance;
 
 public class Preselection  {
 	
@@ -48,9 +59,8 @@ public class Preselection  {
 	 * 
 	 * @return
 	 */
-	public static SharedService serviceWithMoreCommonWantedConfigurations(
-			UserInterface p) {
-
+	public static SharedService serviceWithMoreCommonWantedConfigurations(UserInterface p) {
+		
 		float counter = -1;
 		SharedService r = null;
 		for (SharedService ss : SharedService.getServices(p.getUbik(), 0)) {
@@ -75,33 +85,110 @@ public class Preselection  {
 	 * @param p
 	 * @return
 	 */
-	public static SharedService euclideanDistance(
-			UserInterface p) {
+	public static SharedService getServiceByeuclideanDistance(UserInterface p, VotingMethod vm) {
 		SharedService r = null;
-		int distance = Integer.MIN_VALUE;
+		double distance = Double.MAX_VALUE;
+		
+		EuclideanDistance ed = new EuclideanDistance();
+		
+		
+		
 		
 		System.out.println("[Preselection] (euclideanDistance) Calculando distancias para "+p.getName());
 		for (SharedService ss : SharedService.getServices(p.getUbik(), 0)) {
+			vm.setCss(ss);
+			
+			double serviceDistance = 0;
 			if (ss.getUsers().isEmpty())
 				return ss;
 			
-			//Service current configuration
-			String scc = ss.getCurrentConfiguration();
-			
-			//Preference value
-			int pv = Preferences.getPreferenceValueByKey(p, ss, scc); 
-			System.out.println("[Preselection] (euclideanDistance) Servicio  "+ss.getName()+" con un valor de "+pv);
-			if(pv > distance) {
-				distance = pv;
+			for(UserInterface q : ss.getUsers()) {
+				
+				serviceDistance += calculateEuclideanDistance(vm.getUserVotes(p),vm.getUserVotes(q));
+				//serviceDistance += ed.distance(getInstance(p,vm,ss), getInstance(q,vm,ss));
+			}
+			System.out.println("[Preselection] (euclideanDistance) Distancia para "+ss.getName()+": "+serviceDistance);
+			if(serviceDistance < distance) {
+				System.out.println("[Preselection] (euclideanDistance) Mejor distancia para "+ss.getName()+": "+serviceDistance);
+				distance = serviceDistance;
 				r = ss;
 			}
 
-
+			
 		}
-		System.out.println("[Preselection] (euclideanDistance) -> Elegido "+r.getName()+" con un valor de "+distance+"\n");
-		
 		return r;
-		
 	}
-
+	
+	/**
+     * Calcula la distancia euclídea entre 2 conjuntos de votaciones p y q
+     * @param p
+     * @param q
+     * @return Distancia euclídea
+     */
+    public static double calculateEuclideanDistance(ArrayList<MutableInt2D> p, ArrayList<MutableInt2D> q) {    	
+    	if(p.size() != q.size())
+    		return -1;
+    	double sum = 0;
+    	
+    	for(int i=0; i < p.size(); i++) {
+    		double difference = q.get(i).y - p.get(i).y;
+    		sum += Math.pow(difference, 2);
+    	}
+    	
+    	return Math.sqrt(sum);
+    }
+    
+    /**
+     * Calcula la distancia Manhattan o Taxicab entre 2 conjuntos de votaciones p y q
+     * @param p
+     * @param q
+     * @return Distancia Manhattan o taxicab
+     */
+    public double calculateManhattanDistance(ArrayList<MutableInt2D> p, ArrayList<MutableInt2D> q) {    	
+    	if(p.size() != q.size())
+    		return -1;
+    	double sum = 0;
+    	
+    	for(int i=0; i < p.size(); i++) {
+    		double difference = p.get(i).y - q.get(i).y;
+    		sum += Math.abs(difference);
+    	}
+    	
+    	return sum;
+    }
+    
+    
+    
+    /**
+     * Obtener instancia de una persona en el cluster
+     * @param ui
+     * @return 
+     */
+    private static Instance getInstance(UserInterface ui, VotingMethod vm, SharedService ss) {
+    	
+        Instance inst =  new Instance(ss.getConfigurations().length);
+        FastVector attributes = generateAttributes(ss);
+        ArrayList<MutableInt2D> votes = vm.getUserVotes(ui);
+                           
+        for(int i=0;i<ss.getConfigurations().length;i++){
+            String nameConf = ss.getConfigurations()[i];
+            //int valueConf = ui.getNegotiation().getPreferences(ss).get(nameConf);                                   
+            inst.setValue((Attribute) attributes.elementAt(i), votes.get(i).y);
+         }
+         return inst;
+    }
+    
+    private static FastVector generateAttributes(SharedService ss) {
+        
+    	FastVector attributes= new FastVector();       
+        
+        for(int i=0;i<ss.getConfigurations().length;i++){
+            attributes.addElement(new Attribute(ss.getConfigurations()[i]));
+        }
+        
+        return attributes;
+     
+    }
+	
+	
 }

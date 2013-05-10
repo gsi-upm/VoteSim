@@ -14,6 +14,8 @@ import sim.util.MutableInt2D;
  */
 public abstract class VotingMethod {
 	SharedService css;
+	
+	
 	String selectedConfiguration;
 	Boolean echo = true;
 	ArrayList<MutableInt2D> orderedVotes;
@@ -38,6 +40,14 @@ public abstract class VotingMethod {
 	 */
 	public int getUsersSize() {
 		return this.css.getUsers().size();
+	}
+	
+	public SharedService getCss() {
+		return css;
+	}
+
+	public void setCss(SharedService css) {
+		this.css = css;
 	}
 	
 	/**
@@ -125,6 +135,15 @@ public abstract class VotingMethod {
             }
         }
         return votes;
+    }
+    
+    /**
+     * This method must be overriden
+     * @param ui
+     * @return
+     */
+    public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
+    	return null;
     }
     
     /**

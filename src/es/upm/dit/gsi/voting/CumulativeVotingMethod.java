@@ -12,15 +12,12 @@ public class CumulativeVotingMethod extends VotingMethod {
 	private int k;
 
 	public CumulativeVotingMethod(SharedService css) {
-		super(css);
-		this.k = css.getConfigurations().length;
-		doVoting();
+		super(css);		
 	}
 	
 	public CumulativeVotingMethod(SharedService css, int k) {
 		super(css);
-		this.k = k;
-		doVoting();
+		this.k = k;		
 	}
 	
 
@@ -30,6 +27,7 @@ public class CumulativeVotingMethod extends VotingMethod {
 	 * For this rankingVoting it orders the votes and gets the first one.
 	 */
 	public void doVoting() {
+		this.k = css.getConfigurations().length;
 		if (this.getUsersSize()> 1) {
 	           String configurations[] = this.css.getConfigurations();	            
 	           this.votes = this.votingConfigurations(this.css);
@@ -68,18 +66,40 @@ public class CumulativeVotingMethod extends VotingMethod {
                 count += ordered.get(i).y;                
             }
             for(int i = 0; i < configurations.length; i++) {
-            	
-            	double ponderate = ((double) ordered.get(i).y/(double) count)*(double) k;
-            	votes.get(ordered.get(i).x).y += (int) ponderate;
+            	ArrayList<MutableInt2D> userVotes = getUserVotes(ui);
+            	votes.get(ordered.get(i).x).y += userVotes.get(ordered.get(i).x).y;	            	
             }
         }
         return votes;
+    }
+    
+    @Override
+    public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
+    	
+    	ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
+    	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);
+    	
+    	int count = 0;	
+    	//incializar votos con configuraciones
+        for (int i = 0; i < ordered.size(); i++) {
+            votes.add(new MutableInt2D(i, 0));
+            count += ordered.get(i).y; 
+        }
+        
+        for(int i = 0; i < ordered.size(); i++) {
+        	double ponderate = ((double) ordered.get(i).y/(double) count)*(double) k;
+        	votes.get(ordered.get(i).x).y += (int) ponderate;            	
+        }
+        
+        return votes;
+    	
     }
 
 	
 
 	@Override
-	public String getSelectedConfiguration() {		
+	public String getSelectedConfiguration() {
+		doVoting();
 		if (echo) {
             System.out.println("Plurality VOTES ORDERED for " + this.css.getName());
             System.out.println(votesToString(this.orderedVotes, this.css));

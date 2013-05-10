@@ -22,9 +22,11 @@ import sim.engine.SimState;
 public class UsingSharedService extends SimpleState {  
     
      //protected static final String sharedServicesNames[] = {"TV1","TV2","TV3"};
-     protected SharedService css;// current shared service
+    protected SharedService css;// current shared service
     protected UserInterface user;
     public static int selectionCode=0;//código de selección de servicio
+    
+    protected VotingMethod vm = null;
     
     protected static int codeOfNegotiation = 0;
     public static int codeOfSatisfactionFunction = 0;
@@ -34,6 +36,31 @@ public class UsingSharedService extends SimpleState {
      public UsingSharedService(Person personImplementingAutomaton, int priority, int duration, String name) {
          super(personImplementingAutomaton, priority, duration, name);     
          user=(UserInterface) this.personImplementingAutomaton;  
+         
+       
+         if (codeOfNegotiation == 0) 
+         	vm = new FirstArrivalMethod(css);
+         
+         else if (codeOfNegotiation == 1) 
+         	vm = new RangeVotingMethod(css);
+         
+         else if (codeOfNegotiation == 2) 
+         	vm = new AcceptableForAllMethod(css);
+         
+         else if (codeOfNegotiation == 3) 
+         	vm = new PluralityVotingMethod(css);
+         
+         else if (codeOfNegotiation == 4) 
+         	vm = new CumulativeVotingMethod(css);
+         
+         else if (codeOfNegotiation == 5) 
+         	vm = new ApprovalVotingMethod(css);
+         
+         else if (codeOfNegotiation == 6) 
+         	vm = new BordaVotingMethod(css);
+         
+         else if (codeOfNegotiation == 7) 
+         	vm = new RangeWeightVotingMethod(css);
      }
 
     @Override
@@ -81,7 +108,7 @@ public class UsingSharedService extends SimpleState {
          if(selectionCode==0) return Preselection.closestSharedService(this.personImplementingAutomaton,true);
          if(selectionCode==1) return Preselection.serviceWithMoreCommonWantedConfigurations((UserInterface) this.personImplementingAutomaton);
          if(selectionCode==2)  return  (new Clustering(this.personImplementingAutomaton.getUbik())).getRecommendation(user);   
-         if(selectionCode==3)  return  Preselection.euclideanDistance((UserInterface) this.personImplementingAutomaton); 
+         if(selectionCode==3)  return  Preselection.getServiceByeuclideanDistance((UserInterface) this.personImplementingAutomaton, vm); 
          return null;
     }
 
@@ -105,7 +132,6 @@ public class UsingSharedService extends SimpleState {
     
  public void vote(SharedService css) {
     	
-    	VotingMethod vm = null;
     	
         if (css.getUsers().isEmpty()) {
             return;
@@ -116,33 +142,8 @@ public class UsingSharedService extends SimpleState {
             return;
         }
         
-        System.out.println("Code of Negotiation="+codeOfNegotiation);
-        
-        if (codeOfNegotiation == 0) 
-        	vm = new FirstArrivalMethod(css);
-        
-        else if (codeOfNegotiation == 1) 
-        	vm = new RangeVotingMethod(css);
-        
-        else if (codeOfNegotiation == 2) 
-        	vm = new AcceptableForAllMethod(css);
-        
-        else if (codeOfNegotiation == 3) 
-        	vm = new PluralityVotingMethod(css);
-        
-        else if (codeOfNegotiation == 4) 
-        	vm = new CumulativeVotingMethod(css);
-        
-        else if (codeOfNegotiation == 5) 
-        	vm = new ApprovalVotingMethod(css);
-        
-        else if (codeOfNegotiation == 6) 
-        	vm = new BordaVotingMethod(css);
-        
-        else if (codeOfNegotiation == 7) 
-        	vm = new RangeWeightVotingMethod(css);
-        
-        System.out.println(vm.userPreferencesToString());
+        //System.out.println(vm.userPreferencesToString());
+        vm.setCss(css);
         css.setConfiguration(vm.getSelectedConfiguration());
         
         /*

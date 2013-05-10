@@ -12,12 +12,21 @@ public class FirstArrivalMethod extends VotingMethod {
 	 * @param css
 	 */
 	public FirstArrivalMethod(SharedService css) {
-		super(css);		 
-	        String configuration = getNextPreference(this.getFirstUser(), css, 0);
-	        this.setSelectedConfiguration(configuration);
-	        if (echo) {
-	            System.out.println(css.getName() + "/" + configuration + ", configuration given by first arrival, agent " + this.getFirstUser().getName());
-	        }
+		super(css);	       
+	}
+	
+	public void doVoting() {
+		String configuration = getNextPreference(this.getFirstUser(), css, 0);
+        this.setSelectedConfiguration(configuration);
+        if (echo) {
+            System.out.println(css.getName() + "/" + configuration + ", configuration given by first arrival, agent " + this.getFirstUser().getName());
+        }
+	}
+	
+	@Override
+	public String getSelectedConfiguration() {
+		doVoting();		
+		return this.selectedConfiguration;
 	}
 
 }

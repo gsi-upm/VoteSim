@@ -20,7 +20,7 @@ public class AcceptableForAllMethod extends VotingMethod {
 
 	public AcceptableForAllMethod(SharedService css) {
 		super(css);
-		doVoting();
+		
 	}
 	
 	private void doVoting() {
@@ -39,6 +39,7 @@ public class AcceptableForAllMethod extends VotingMethod {
 	
 	@Override
 	public String getSelectedConfiguration() {
+		doVoting();
 		if (getAcceptableForAll()) {
 			return this.getSelectedConfiguration();           
         }else {

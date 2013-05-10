@@ -6,8 +6,10 @@
 package sim.app.ubik.behaviors.sharedservices;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import sim.app.ubik.Ubik;
+import sim.util.MutableInt2D;
 
 /**
  *

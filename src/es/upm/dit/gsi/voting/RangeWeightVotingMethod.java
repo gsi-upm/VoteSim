@@ -12,8 +12,7 @@ import sim.util.MutableInt2D;
 public class RangeWeightVotingMethod extends VotingMethod {
 
 	public RangeWeightVotingMethod(SharedService css) {
-		super(css);
-		selectConfigurationByNegotiationWeight(css);	
+		super(css);		
 		
 	}
 	
@@ -154,7 +153,8 @@ public class RangeWeightVotingMethod extends VotingMethod {
 	
 
 	@Override
-	public String getSelectedConfiguration() {		
+	public String getSelectedConfiguration() {
+		selectConfigurationByNegotiationWeight(css);
 		if (echo) {
             System.out.println("VOTES ORDERED for " + this.css.getName());
             System.out.println(votesToString(this.orderedVotes, this.css));

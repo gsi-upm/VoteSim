@@ -10,7 +10,7 @@ public class BordaVotingMethod extends VotingMethod {
 
 	public BordaVotingMethod(SharedService css) {
 		super(css);
-		doVoting();
+		
 	}
 
 
@@ -53,16 +53,38 @@ public class BordaVotingMethod extends VotingMethod {
         	ordered = ui.getNegotiation().getOrderedPreferences(css);
 
             for(int i = 0; i < configurations.length; i++) {
-            	votes.get(ordered.get(i).x).y += configurations.length-(i+1);	            	
+            	ArrayList<MutableInt2D> userVotes = getUserVotes(ui);
+            	votes.get(ordered.get(i).x).y += userVotes.get(ordered.get(i).x).y;	            	
             }
         }
         return votes;
+    }
+    
+    @Override
+    public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
+    	
+    	ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
+    	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);
+    	
+    	   	
+    	//incializar votos con configuraciones
+        for (int i = 0; i < ordered.size(); i++) {
+            votes.add(new MutableInt2D(i, 0));
+        }
+        
+        for(int i = 0; i < ordered.size(); i++) {
+        	votes.get(ordered.get(i).x).y += ordered.size()-(i+1);	            	
+        }
+        
+        return votes;
+    	
     }
 
 	
 
 	@Override
-	public String getSelectedConfiguration() {		
+	public String getSelectedConfiguration() {
+		doVoting();
 		if (echo) {
             System.out.println("Plurality VOTES ORDERED for " + this.css.getName());
             System.out.println(votesToString(this.orderedVotes, this.css));

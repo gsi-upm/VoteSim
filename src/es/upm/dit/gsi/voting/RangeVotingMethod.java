@@ -7,8 +7,7 @@ public class RangeVotingMethod extends VotingMethod {
 
 	public RangeVotingMethod(SharedService css) {
 		super(css);
-		doVoting();		
-		
+				
 	}
 	
 	/**
@@ -26,11 +25,14 @@ public class RangeVotingMethod extends VotingMethod {
 	}
 	
 	
+	
+	
 
 	@Override
-	public String getSelectedConfiguration() {		
+	public String getSelectedConfiguration() {
+		doVoting();		
 		if (echo) {
-            System.out.println("VOTES ORDERED for " + this.css.getName());
+            System.out.println("RangeVoting VOTES ORDERED for " + this.css.getName());
             System.out.println(votesToString(this.orderedVotes, this.css));
             System.out.println("Result: " + this.css.getCurrentConfiguration());
         }

@@ -10,7 +10,6 @@ public class PluralityVotingMethod extends VotingMethod {
 
 	public PluralityVotingMethod(SharedService css) {
 		super(css);
-		doVoting();
 	}
 	
 
@@ -68,7 +67,8 @@ public class PluralityVotingMethod extends VotingMethod {
 	
 
 	@Override
-	public String getSelectedConfiguration() {		
+	public String getSelectedConfiguration() {
+		doVoting();
 		if (echo) {
             System.out.println("Plurality VOTES ORDERED for " + this.css.getName());
             System.out.println(votesToString(this.orderedVotes, this.css));
