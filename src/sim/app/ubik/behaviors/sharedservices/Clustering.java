@@ -5,11 +5,15 @@
 
 package sim.app.ubik.behaviors.sharedservices;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import es.upm.dit.gsi.voting.VotingMethod;
 
 import sim.app.ubik.Ubik;
 import sim.app.ubik.domoticDevices.SharedService;
 import sim.app.ubik.people.Person;
+import sim.util.MutableInt2D;
 import weka.clusterers.AbstractClusterer;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Attribute;
@@ -28,10 +32,12 @@ public class Clustering {
     List<SharedService> slist;
     FastVector attributes;
     boolean echo;
+    VotingMethod vm;
   
     
-    public Clustering(Ubik u){
+    public Clustering(Ubik u, VotingMethod vm){
         this.ubik=u;
+        this.vm = vm;
          slist = SharedService.getServices(ubik, 0);     
          generateAttributes(false);
         
@@ -41,7 +47,7 @@ public class Clustering {
     public SharedService getRecommendation(UserInterface ui){
         try {
             clusteringOfUsers();
-            Instance instance = this.getInstance(ui);
+            Instance instance = this.getInstance2(ui);
             AbstractClusterer ac=  clusteringOfUsers();            
             if(ac==null) return slist.get(ubik.random.nextInt(slist.size())); // no había instancias, servicio aleatorio            
             int cluster= ac.clusterInstance(instance);                
@@ -140,6 +146,18 @@ public class Clustering {
                     String nameConf=ss.getConfigurations()[i];
                     int valueConf= ui.getNegotiation().getPreferences(ss).get(nameConf);                                   
                     inst.setValue((Attribute) attributes.elementAt(i), valueConf);
+         }
+         return inst;
+    }
+    
+    private  Instance getInstance2(UserInterface ui) {
+    	
+    	SharedService ss= slist.get(0);
+     	Instance inst =  new Instance(ss.getConfigurations().length);
+        ArrayList<MutableInt2D> votes = vm.getUserVotes(ui, ss);
+                           
+        for(int i=0;i<ss.getConfigurations().length;i++){                                          
+            inst.setValue((Attribute) attributes.elementAt(i), votes.get(i).y);
          }
          return inst;
     }

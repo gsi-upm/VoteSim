@@ -222,6 +222,12 @@ public abstract class VotingMethod {
 	public void setOrderedVotes(ArrayList<MutableInt2D> orderedVotes) {
 		this.orderedVotes = orderedVotes;
 	}
+
+	public ArrayList<MutableInt2D> getUserVotes(UserInterface ui,
+			SharedService ss) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

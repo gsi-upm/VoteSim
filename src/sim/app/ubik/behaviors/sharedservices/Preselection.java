@@ -90,7 +90,7 @@ public class Preselection  {
 		double distance = Double.MAX_VALUE;
 		
 		EuclideanDistance ed = new EuclideanDistance();
-		
+			
 		
 		
 		
@@ -104,8 +104,9 @@ public class Preselection  {
 			
 			for(UserInterface q : ss.getUsers()) {
 				
-				serviceDistance += calculateEuclideanDistance(vm.getUserVotes(p),vm.getUserVotes(q));
-				//serviceDistance += ed.distance(getInstance(p,vm,ss), getInstance(q,vm,ss));
+				//serviceDistance += calculateEuclideanDistance(vm.getUserVotes(p),vm.getUserVotes(q));
+				serviceDistance += ed.distance(getInstance(p,vm,ss), getInstance(q,vm,ss));
+				
 			}
 			System.out.println("[Preselection] (euclideanDistance) Distancia para "+ss.getName()+": "+serviceDistance);
 			if(serviceDistance < distance) {
@@ -170,9 +171,7 @@ public class Preselection  {
         FastVector attributes = generateAttributes(ss);
         ArrayList<MutableInt2D> votes = vm.getUserVotes(ui);
                            
-        for(int i=0;i<ss.getConfigurations().length;i++){
-            String nameConf = ss.getConfigurations()[i];
-            //int valueConf = ui.getNegotiation().getPreferences(ss).get(nameConf);                                   
+        for(int i=0;i<ss.getConfigurations().length;i++){                                          
             inst.setValue((Attribute) attributes.elementAt(i), votes.get(i).y);
          }
          return inst;

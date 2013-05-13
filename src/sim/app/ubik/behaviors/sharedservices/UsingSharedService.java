@@ -107,7 +107,7 @@ public class UsingSharedService extends SimpleState {
     private SharedService suggestSharedService() {
          if(selectionCode==0) return Preselection.closestSharedService(this.personImplementingAutomaton,true);
          if(selectionCode==1) return Preselection.serviceWithMoreCommonWantedConfigurations((UserInterface) this.personImplementingAutomaton);
-         if(selectionCode==2)  return  (new Clustering(this.personImplementingAutomaton.getUbik())).getRecommendation(user);   
+         if(selectionCode==2)  return  (new Clustering(this.personImplementingAutomaton.getUbik(), vm)).getRecommendation(user);   
          if(selectionCode==3)  return  Preselection.getServiceByeuclideanDistance((UserInterface) this.personImplementingAutomaton, vm); 
          return null;
     }

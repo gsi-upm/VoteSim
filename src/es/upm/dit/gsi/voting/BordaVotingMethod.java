@@ -79,6 +79,26 @@ public class BordaVotingMethod extends VotingMethod {
         return votes;
     	
     }
+    
+    @Override
+    public ArrayList<MutableInt2D> getUserVotes(UserInterface ui, SharedService ss){
+    	
+    	ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
+    	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(ss);
+    	
+    	   	
+    	//incializar votos con configuraciones
+        for (int i = 0; i < ordered.size(); i++) {
+            votes.add(new MutableInt2D(i, 0));
+        }
+        
+        for(int i = 0; i < ordered.size(); i++) {
+        	votes.get(ordered.get(i).x).y += ordered.size()-(i+1);	            	
+        }
+        
+        return votes;
+    	
+    }
 
 	
 
