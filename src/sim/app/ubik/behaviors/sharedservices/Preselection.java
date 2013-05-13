@@ -1,11 +1,6 @@
 package sim.app.ubik.behaviors.sharedservices;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import es.upm.dit.gsi.voting.VotingMethod;
-
 import sim.app.ubik.behaviors.PositionTools;
 import sim.app.ubik.building.rooms.Room;
 import sim.app.ubik.domoticDevices.SharedService;
@@ -16,6 +11,7 @@ import weka.core.Attribute;
 import weka.core.EuclideanDistance;
 import weka.core.FastVector;
 import weka.core.Instance;
+import es.upm.dit.gsi.voting.VotingMethod;
 
 public class Preselection  {
 	
@@ -90,8 +86,6 @@ public class Preselection  {
 		double distance = Double.MAX_VALUE;
 		
 		EuclideanDistance ed = new EuclideanDistance();
-			
-		
 		
 		
 		System.out.println("[Preselection] (euclideanDistance) Calculando distancias para "+p.getName());
@@ -104,8 +98,8 @@ public class Preselection  {
 			
 			for(UserInterface q : ss.getUsers()) {
 				
-				//serviceDistance += calculateEuclideanDistance(vm.getUserVotes(p),vm.getUserVotes(q));
-				serviceDistance += ed.distance(getInstance(p,vm,ss), getInstance(q,vm,ss));
+				serviceDistance += calculateEuclideanDistance(vm.getUserVotes(p),vm.getUserVotes(q));
+				//serviceDistance += ed.distance(getInstance(p,vm,ss), getInstance(q,vm,ss));
 				
 			}
 			System.out.println("[Preselection] (euclideanDistance) Distancia para "+ss.getName()+": "+serviceDistance);

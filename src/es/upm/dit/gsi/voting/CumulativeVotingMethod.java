@@ -52,7 +52,8 @@ public class CumulativeVotingMethod extends VotingMethod {
         
         ArrayList<MutableInt2D> ordered = new ArrayList<MutableInt2D>();
         
-        int count;
+        @SuppressWarnings("unused")
+		int count;
         
         //incializar votos con configuraciones
         for (int i = 0; i < configurations.length; i++) {

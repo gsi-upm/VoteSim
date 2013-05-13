@@ -42,10 +42,18 @@ public abstract class VotingMethod {
 		return this.css.getUsers().size();
 	}
 	
+	/**
+	 * Getter
+	 * @return recurso compartido para el que se aplica el sistema de votación
+	 */
 	public SharedService getCss() {
 		return css;
 	}
 
+	/**
+	 * Establece el SS a usar. Importante a veces si se ha inicializado el VM con un SS null.
+	 * @param css
+	 */
 	public void setCss(SharedService css) {
 		this.css = css;
 	}
@@ -57,6 +65,7 @@ public abstract class VotingMethod {
 	public void setSelectedConfiguration(String conf) {
 		this.selectedConfiguration = conf;
 	}
+	
 	
 	 public void setSelectedConfiguration(int index){
          this.selectedConfiguration = this.css.getConfigurations()[index];
@@ -78,6 +87,12 @@ public abstract class VotingMethod {
 		return this.selectedConfiguration;
 	}
 	
+	/**
+	 * Devuelve los votos en string
+	 * @param votes
+	 * @param css
+	 * @return
+	 */
 	protected String votesToString(ArrayList<MutableInt2D> votes, SharedService css) {
         String r = "";
         for (MutableInt2D mi : votes) {
@@ -123,27 +138,51 @@ public abstract class VotingMethod {
     protected ArrayList<MutableInt2D> votingConfigurations(SharedService css) {
 
         String configurations[] = css.getConfigurations();
+        
         ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
+        ArrayList<MutableInt2D> ordered = new ArrayList<MutableInt2D>();
+        
         //incializar votos con configuraciones
         for (int i = 0; i < configurations.length; i++) {
             votes.add(new MutableInt2D(i, 0));
         }
         //votar
         for (UserInterface ui : css.getUsers()) {
+        	ordered = ui.getNegotiation().getOrderedPreferences(css);
+        	
             for (int i = 0; i < configurations.length; i++) {
-                votes.get(i).y += ui.getNegotiation().getPreferences(css).get(configurations[i]);
+            	ArrayList<MutableInt2D> userVotes = getUserVotes(ui);
+            	votes.get(ordered.get(i).x).y += userVotes.get(ordered.get(i).x).y;	  
             }
         }
         return votes;
     }
     
     /**
-     * This method must be overriden
+     * Obtiene los votos de cada usuario. En los métodos de votación estándar los votos son directamente
+	 * las preferencias.
+	 * En el resto de sistemas de votación este método debe ser overriden
      * @param ui
      * @return
      */
-    public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
-    	return null;
+ public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
+    	
+    	ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
+    	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);
+    	
+    	String configurations[] = css.getConfigurations();    	
+    	   	
+    	//incializar votos con configuraciones
+        for (int i = 0; i < ordered.size(); i++) {
+            votes.add(new MutableInt2D(i, 0));
+        }        
+       
+        for (int i = 0; i < configurations.length; i++) {
+            votes.get(i).y += ui.getNegotiation().getPreferences(css).get(configurations[i]);
+        }       
+        
+        return votes;
+    	
     }
     
     /**
@@ -221,12 +260,6 @@ public abstract class VotingMethod {
 
 	public void setOrderedVotes(ArrayList<MutableInt2D> orderedVotes) {
 		this.orderedVotes = orderedVotes;
-	}
-
-	public ArrayList<MutableInt2D> getUserVotes(UserInterface ui,
-			SharedService ss) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	
