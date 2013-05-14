@@ -32,9 +32,9 @@ public class RangeVotingMethod extends VotingMethod {
 	public String getSelectedConfiguration() {
 		doVoting();		
 		if (echo) {
-            System.out.println("RangeVoting VOTES ORDERED for " + this.css.getName());
-            System.out.println(votesToString(this.orderedVotes, this.css));
-            System.out.println("Result: " + this.css.getCurrentConfiguration());
+			log.finest("RangeVoting VOTES ORDERED for " + this.css.getName());
+			log.finest(votesToString(this.orderedVotes, this.css));
+			log.finest("Result: " + this.css.getCurrentConfiguration());
         }
 		return this.selectedConfiguration;
 	}

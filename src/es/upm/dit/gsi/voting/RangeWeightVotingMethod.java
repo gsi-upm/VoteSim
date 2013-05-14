@@ -39,10 +39,10 @@ public class RangeWeightVotingMethod extends VotingMethod {
 	            } else {
 
 	                if (echo) {
-	                    System.out.println(css.getName());
-	                    System.out.println("\t Before argumenting:" + this.weightToString(css));
+	                	log.finest(css.getName());
+	                	log.finest("\t Before argumenting:" + this.weightToString(css));
 	                    if (agentsToBeConvinced.isEmpty()) {
-	                        System.out.println("\t No change of weights");
+	                    	log.finest("\t No change of weights");
 	                    }
 	                }
 
@@ -54,8 +54,8 @@ public class RangeWeightVotingMethod extends VotingMethod {
 
 
 	                if (echo) {
-	                    System.out.println("\t After argumenting:" + this.weightToString(css));
-	                    System.out.println("\t Result: " + css.getCurrentConfiguration());
+	                	log.finest("\t After argumenting:" + this.weightToString(css));
+	                	log.finest("\t Result: " + css.getCurrentConfiguration());
 	                }
 
 	                return;
@@ -63,7 +63,7 @@ public class RangeWeightVotingMethod extends VotingMethod {
 	        }
 
 	        if (echo) {
-	            System.out.println("Argumentation did not work, deciding by votes");
+	        	log.finest("Argumentation did not work, deciding by votes");
 	        }
 	        doVoting();
 	        
@@ -156,9 +156,9 @@ public class RangeWeightVotingMethod extends VotingMethod {
 	public String getSelectedConfiguration() {
 		selectConfigurationByNegotiationWeight(css);
 		if (echo) {
-            System.out.println("VOTES ORDERED for " + this.css.getName());
-            System.out.println(votesToString(this.orderedVotes, this.css));
-            System.out.println("Result: " + this.css.getCurrentConfiguration());
+			log.finest("VOTES ORDERED for " + this.css.getName());
+			log.finest(votesToString(this.orderedVotes, this.css));
+			log.finest("Result: " + this.css.getCurrentConfiguration());
         }
 		return this.selectedConfiguration;
 	}

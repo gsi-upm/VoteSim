@@ -53,7 +53,7 @@ public class CumulativeVotingMethod extends VotingMethod {
         ArrayList<MutableInt2D> ordered = new ArrayList<MutableInt2D>();
         
         @SuppressWarnings("unused")
-		int count;
+		int totalSum;
         
         //incializar votos con configuraciones
         for (int i = 0; i < configurations.length; i++) {
@@ -61,11 +61,12 @@ public class CumulativeVotingMethod extends VotingMethod {
         }
         //votar
         for (UserInterface ui : css.getUsers()) {
-        	count = 0;
+        	totalSum = 0;
         	ordered = ui.getNegotiation().getOrderedPreferences(css);
             for (int i = 0; i < configurations.length; i++) {                
-                count += ordered.get(i).y;                
+                totalSum += ordered.get(i).y;                
             }
+            
             for(int i = 0; i < configurations.length; i++) {
             	ArrayList<MutableInt2D> userVotes = getUserVotes(ui);
             	votes.get(ordered.get(i).x).y += userVotes.get(ordered.get(i).x).y;	            	
@@ -73,6 +74,7 @@ public class CumulativeVotingMethod extends VotingMethod {
         }
         return votes;
     }
+
     
     @Override
     public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
@@ -80,20 +82,26 @@ public class CumulativeVotingMethod extends VotingMethod {
     	ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
     	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);
     	
-    	int count = 0;	
-    	//incializar votos con configuraciones
+    	int totalSum = 0;	
+    	
+    	/* incializar votos con configuraciones 
+    	 * y obtener sumatorio total para calculo de probabilidades */    	 
         for (int i = 0; i < ordered.size(); i++) {
             votes.add(new MutableInt2D(i, 0));
-            count += ordered.get(i).y; 
+            totalSum += ordered.get(i).y; 
         }
-        
-        for(int i = 0; i < ordered.size(); i++) {
-        	double ponderate = ((double) ordered.get(i).y/(double) count)*(double) k;
-        	votes.get(ordered.get(i).x).y += (int) ponderate;            	
+        int vg = 0;
+        while(vg<k) {
+        	for(int i = 0; i < ordered.size(); i++) {
+        		double r = Math.random();
+        		double probCv = (double) ordered.get(i).y/(double) totalSum;        		
+        		if(r <= probCv && vg<k){
+        			votes.get(ordered.get(i).x).y += 1;
+        			vg++;
+        		}
+        	}        	
         }
-        
-        return votes;
-    	
+        return votes;    	
     }
 
 	
@@ -102,9 +110,9 @@ public class CumulativeVotingMethod extends VotingMethod {
 	public String getSelectedConfiguration() {
 		doVoting();
 		if (echo) {
-            System.out.println("Plurality VOTES ORDERED for " + this.css.getName());
-            System.out.println(votesToString(this.orderedVotes, this.css));
-            System.out.println("Result: " + this.css.getCurrentConfiguration());
+            log.finest("Plurality VOTES ORDERED for " + this.css.getName());
+            log.finest(votesToString(this.orderedVotes, this.css));
+            log.finest("Result: " + this.css.getCurrentConfiguration());
         }
 		return this.selectedConfiguration;
 	}

@@ -22,8 +22,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
 
     /**
      * Creates new form MonitorServices
-     */
-    
+     */    
     
     protected MonitorService ms;
     protected SharedServicesSim sss;

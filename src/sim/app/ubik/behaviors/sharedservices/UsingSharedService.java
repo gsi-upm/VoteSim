@@ -153,9 +153,7 @@ public class UsingSharedService extends SimpleState {
         else
         	System.out.println("No hay empate");
         	
-        	*/
-
-     
+        	*/     
     }
  
 	 public static void setCodeOfSatisfactionFuction(int c) {
@@ -164,9 +162,7 @@ public class UsingSharedService extends SimpleState {
 	
 	   public static int getCodeOfSatisfactionFuction() {
 	     return UsingSharedService.codeOfSatisfactionFunction;
-	 }
-	 
-	     
+	 }	     
 	     
 	 public static void setCodeOfNegotiation(int c) {
 		 UsingSharedService.codeOfNegotiation = c;

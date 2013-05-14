@@ -20,6 +20,7 @@ import weka.core.Instance;
  * asociando una instancia a cada tipo de servicio.
  *
  * @author Emilio Serrano, emilioserra@um.es
+ * @author Pablo Moncada, pmoncada@dit.upm.es
  */
 public class Preferences {
 

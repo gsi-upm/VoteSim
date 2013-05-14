@@ -12,7 +12,11 @@ import sim.util.MutableInt2D;
 import es.upm.dit.gsi.voting.VotingMethod;
 
 
-
+/**
+ * 
+ * @author Pablo Moncada pmoncada@dit.upm.es 14/05/2013
+ *
+ */
 public class Preselection  {
 	
 	static Logger log = Logger.getLogger("Preselection");	
@@ -87,7 +91,7 @@ public class Preselection  {
 		SharedService r = null;
 		double distance = Double.MAX_VALUE;	
 			
-		log.info("(euclideanDistance) Calculando distancias para "+p.getName());
+		log.finest("(euclideanDistance) Calculando distancias para "+p.getName());
 		for (SharedService ss : SharedService.getServices(p.getUbik(), 0)) {
 			vm.setCss(ss);
 			
@@ -99,10 +103,10 @@ public class Preselection  {
 			for(UserInterface q : ss.getUsers())				
 				serviceDistance += calculateEuclideanDistance(vm.getUserVotes(p),vm.getUserVotes(q));
 
-			log.info("(euclideanDistance) Distancia para "+ss.getName()+": "+serviceDistance);
+			log.finest("(euclideanDistance) Distancia para "+ss.getName()+": "+serviceDistance);
 			
 			if(serviceDistance < distance) {
-				log.info("(euclideanDistance) Mejor distancia para "+ss.getName()+": "+serviceDistance);
+				log.finest("(euclideanDistance) Mejor distancia para "+ss.getName()+": "+serviceDistance);
 				distance = serviceDistance;
 				r = ss;
 			}
@@ -123,7 +127,7 @@ public class Preselection  {
 		SharedService r = null;
 		double distance = Double.MAX_VALUE;	
 			
-		log.info("(manhattanDistance) Calculando distancias para "+p.getName());
+		log.finest("(manhattanDistance) Calculando distancias para "+p.getName());
 		for (SharedService ss : SharedService.getServices(p.getUbik(), 0)) {
 			vm.setCss(ss);
 			
@@ -135,10 +139,10 @@ public class Preselection  {
 			for(UserInterface q : ss.getUsers())				
 				serviceDistance += calculateManhattanDistance(vm.getUserVotes(p),vm.getUserVotes(q));
 
-			log.info("(manhattanDistance) Distancia para "+ss.getName()+": "+serviceDistance);
+			log.finest("(manhattanDistance) Distancia para "+ss.getName()+": "+serviceDistance);
 			
 			if(serviceDistance < distance) {
-				log.info("(manhattanDistance) Mejor distancia para "+ss.getName()+": "+serviceDistance);
+				log.finest("(manhattanDistance) Mejor distancia para "+ss.getName()+": "+serviceDistance);
 				distance = serviceDistance;
 				r = ss;
 			}

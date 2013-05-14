@@ -168,7 +168,7 @@ public abstract class VotingMethod {
      * @param ui
      * @return
      */
- public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
+    public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
     	
     	ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
     	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);
@@ -182,11 +182,18 @@ public abstract class VotingMethod {
        
         for (int i = 0; i < configurations.length; i++) {
             votes.get(i).y += ui.getNegotiation().getPreferences(css).get(configurations[i]);
-        }       
+        }
+        
         
         return votes;
     	
     }
+    
+    public String getUserVotesToString(UserInterface ui) {
+    	ArrayList<MutableInt2D> votes = getUserVotes(ui);
+    	return votes.toString();
+    }
+ 
     
     /**
      * obtener la preferencia favorita

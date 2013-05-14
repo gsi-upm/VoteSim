@@ -8,6 +8,7 @@ package sim.app.ubik.behaviors.sharedservices;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import sim.app.ubik.Ubik;
 import sim.app.ubik.domoticDevices.SharedService;
@@ -42,6 +43,8 @@ public class MonitorService implements Steppable, Stoppable {
     public MutableDouble maxWithoutService = new MutableDouble(0); 
     public String text="";//texto a mostrar en ventana
     public int numberOfUsersUsingServices;
+    
+    Logger log = Logger.getLogger("MonitorService");
     
     
     public MonitorService(Ubik ubik) {
@@ -96,18 +99,14 @@ public class MonitorService implements Steppable, Stoppable {
         
         if(!Float.isNaN(globalSatisfaction) && globalSatisfaction <= 1)
         	globalSatisfactionAccumulated = globalSatisfactionAccumulated + globalSatisfaction;
-        
-        
-        
-        
+
         
         if(momentOfConflict==1 ){
         	
-        	System.out.println("");
-        	
-        	System.out.println("Step: "+step);
-            System.out.println("SAS: "+globalSatisfaction);
-            System.out.println("Accumulated SAS: "+globalSatisfactionAccumulated/step);
+              	
+        	log.finest("Step: "+step);
+        	log.finest("SAS: "+globalSatisfaction);
+        	log.finest("Accumulated SAS: "+globalSatisfactionAccumulated/step);
          
            
             

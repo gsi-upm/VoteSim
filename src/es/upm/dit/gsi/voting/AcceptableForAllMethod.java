@@ -30,7 +30,7 @@ public class AcceptableForAllMethod extends VotingMethod {
             if (isAcceptableForAll(css.getConfigurations()[mi.x], css)) {
             	setSelectedConfiguration(mi.x);
                 if (echo) {
-                    System.out.println("First vote acceptable for all: " + css.getConfigurations()[mi.x] + ", votes: " + votesToString(orderedVotes, css));
+                	log.finest("First vote acceptable for all: " + css.getConfigurations()[mi.x] + ", votes: " + votesToString(orderedVotes, css));
                 }
                 setAcceptableForAll(true);
             }
@@ -45,7 +45,7 @@ public class AcceptableForAllMethod extends VotingMethod {
 			return this.getSelectedConfiguration();           
         }else {
         	 if (echo) {
-                 System.out.println("No vote acceptable for all in , deciding by votes");
+        		 log.finest("No vote acceptable for all in , deciding by votes");
              }
         	 VotingMethod rv = new RangeVotingMethod(css);
         	 return rv.getSelectedConfiguration();

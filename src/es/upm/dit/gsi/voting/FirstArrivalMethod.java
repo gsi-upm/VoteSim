@@ -19,7 +19,7 @@ public class FirstArrivalMethod extends VotingMethod {
 		String configuration = getNextPreference(this.getFirstUser(), css, 0);
         this.setSelectedConfiguration(configuration);
         if (echo) {
-            System.out.println(css.getName() + "/" + configuration + ", configuration given by first arrival, agent " + this.getFirstUser().getName());
+        	log.finest(css.getName() + "/" + configuration + ", configuration given by first arrival, agent " + this.getFirstUser().getName());
         }
 	}
 	
