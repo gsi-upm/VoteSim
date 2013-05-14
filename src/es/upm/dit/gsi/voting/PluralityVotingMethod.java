@@ -10,8 +10,7 @@ public class PluralityVotingMethod extends VotingMethod {
 
 	public PluralityVotingMethod(SharedService css) {
 		super(css);
-	}
-	
+	}	
 
 	/**
 	 * This method implements the moting method and writes the selected configuration
@@ -29,8 +28,7 @@ public class PluralityVotingMethod extends VotingMethod {
 	           this.orderedVotes = this.orderPreferences(this.votes);	            
 	           setSelectedConfiguration(configurations[this.orderedVotes.get(0).x]);      
 	    }		
-	}
-	
+	}	
 	    
     /**
      * Es el método que se encarga de realizar las votaciones.
@@ -49,21 +47,40 @@ public class PluralityVotingMethod extends VotingMethod {
         ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
         
         ArrayList<MutableInt2D> ordered = new ArrayList<MutableInt2D>();
-        
-        //incializar votos con configuraciones
+
         for (int i = 0; i < configurations.length; i++) {
             votes.add(new MutableInt2D(i, 0));
         }
-        //votar
+        
+        /* Se cogen los votos de cada usuario y se suman en las votaciones globales */
         for (UserInterface ui : css.getUsers()) {
             for (int i = 0; i < configurations.length; i++) {            
-                ordered = ui.getNegotiation().getOrderedPreferences(css);
-                votes.get(ordered.get(0).x).y += 1;
+            	ArrayList<MutableInt2D> userVotes = getUserVotes(ui);
+            	votes.get(ordered.get(i).x).y += userVotes.get(ordered.get(i).x).y;	
             }
         }
         return votes;
     }
-	
+    
+    /**
+     * Devuelve los votos con un 1 en la preferencia más alta del usuario y 0 en el resto.
+     * @param ui
+     * @return
+     */
+    public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
+    	
+    	ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
+    	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);
+
+        for (int i = 0; i < ordered.size(); i++) {
+            votes.add(new MutableInt2D(i, 0));
+        }   
+       
+        ordered = ui.getNegotiation().getOrderedPreferences(css);
+        votes.get(ordered.get(0).x).y = 1;    
+        
+        return votes;    	
+    }		
 	
 
 	@Override

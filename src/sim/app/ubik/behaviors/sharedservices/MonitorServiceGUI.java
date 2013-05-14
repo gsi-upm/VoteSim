@@ -126,7 +126,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
 
         jLabel10.setText("Preselection");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Closest", "Common wanted/users", "K-means Clustering", "Euclidean distance", "EM Clustering" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Closest", "Common wanted/users", "K-means Clustering","EM Clustering", "Euclidean distance", "Manhattan Distance"}));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);

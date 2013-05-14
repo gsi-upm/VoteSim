@@ -1,6 +1,7 @@
 package es.upm.dit.gsi.voting;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import sim.app.ubik.behaviors.sharedservices.UserInterface;
 import sim.app.ubik.domoticDevices.SharedService;
@@ -20,6 +21,8 @@ public abstract class VotingMethod {
 	Boolean echo = true;
 	ArrayList<MutableInt2D> orderedVotes;
 	ArrayList<MutableInt2D> votes;
+	
+	Logger log = Logger.getLogger("VotingMethod");
 	
 	public VotingMethod(SharedService css) {
 		this.css = css;
@@ -44,7 +47,7 @@ public abstract class VotingMethod {
 	
 	/**
 	 * Getter
-	 * @return recurso compartido para el que se aplica el sistema de votación
+	 * @return recurso compartido para el que se aplica el sistema de votaciï¿½n
 	 */
 	public SharedService getCss() {
 		return css;
@@ -159,9 +162,9 @@ public abstract class VotingMethod {
     }
     
     /**
-     * Obtiene los votos de cada usuario. En los métodos de votación estándar los votos son directamente
+     * Obtiene los votos de cada usuario. En los mï¿½todos de votaciï¿½n estï¿½ndar los votos son directamente
 	 * las preferencias.
-	 * En el resto de sistemas de votación este método debe ser overriden
+	 * En el resto de sistemas de votaciï¿½n este mï¿½todo debe ser overriden
      * @param ui
      * @return
      */

@@ -13,7 +13,6 @@ public class BordaVotingMethod extends VotingMethod {
 		
 	}
 
-
 	/**
 	 * This method implements the moting method and writes the selected configuration
 	 * into selectedConfiguration.
@@ -26,8 +25,7 @@ public class BordaVotingMethod extends VotingMethod {
 	           this.orderedVotes = this.orderPreferences(this.votes);	            
 	           setSelectedConfiguration(configurations[this.orderedVotes.get(0).x]);      
 	    }		
-	}
-	
+	}	
 	    
     /**
      * Devuelve los votos que recibe cada servicio en un array de Int2D, siendo
@@ -38,20 +36,18 @@ public class BordaVotingMethod extends VotingMethod {
      */
     @Override
     protected ArrayList<MutableInt2D> votingConfigurations(SharedService css) {
-
-        String configurations[] = css.getConfigurations();
-        ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
-        
+    	
+        String configurations[] = css.getConfigurations();        
+        ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();        
         ArrayList<MutableInt2D> ordered = new ArrayList<MutableInt2D>();
-
-        //incializar votos con configuraciones
+        
         for (int i = 0; i < configurations.length; i++) {
             votes.add(new MutableInt2D(i, 0));
         }
-        //votar
+        
+        /* Se cogen los votos de cada usuario y se suman en las votaciones globales */
         for (UserInterface ui : css.getUsers()) {
         	ordered = ui.getNegotiation().getOrderedPreferences(css);
-
             for(int i = 0; i < configurations.length; i++) {
             	ArrayList<MutableInt2D> userVotes = getUserVotes(ui);
             	votes.get(ordered.get(i).x).y += userVotes.get(ordered.get(i).x).y;	            	
@@ -64,8 +60,7 @@ public class BordaVotingMethod extends VotingMethod {
     public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
     	
     	ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
-    	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);
-    	
+    	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);    	
     	   	
     	//incializar votos con configuraciones
         for (int i = 0; i < ordered.size(); i++) {
@@ -78,8 +73,7 @@ public class BordaVotingMethod extends VotingMethod {
         
         return votes;
     	
-    }
-    
+    }    
   
 	@Override
 	public String getSelectedConfiguration() {
