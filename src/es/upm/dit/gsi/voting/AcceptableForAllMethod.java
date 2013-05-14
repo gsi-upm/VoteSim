@@ -19,9 +19,10 @@ public class AcceptableForAllMethod extends VotingMethod {
 	}
 
 	public AcceptableForAllMethod(SharedService css) {
-		super(css);
-		
+		super(css);		
 	}
+	
+
 	
 	private void doVoting() {
 		ArrayList<MutableInt2D> orderedVotes = this.orderPreferences(this.votingConfigurations(css));

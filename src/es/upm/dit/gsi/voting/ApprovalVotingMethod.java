@@ -10,6 +10,7 @@ public class ApprovalVotingMethod extends VotingMethod {
 
 		//Default votes, it will vote for the top 3.
 		private int k = 3;
+		private boolean moreThanFive = false;
 
 		public ApprovalVotingMethod(SharedService css) {
 			super(css);
@@ -21,6 +22,11 @@ public class ApprovalVotingMethod extends VotingMethod {
 			this.k = k;
 		}
 		
+		
+		public ApprovalVotingMethod(SharedService css, boolean moreThanFive) {
+			super(css);
+			this.moreThanFive = moreThanFive;
+		}
 
 		/**
 		 * This method implements the moting method and writes the selected configuration
@@ -72,20 +78,25 @@ public class ApprovalVotingMethod extends VotingMethod {
 	    public ArrayList<MutableInt2D> getUserVotes(UserInterface ui){
 	    	
 	    	ArrayList<MutableInt2D> votes = new ArrayList<MutableInt2D>();
-	    	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);
-	    	
+	    	ArrayList<MutableInt2D> ordered = ui.getNegotiation().getOrderedPreferences(css);	    	
 	    	   	
 	    	//incializar votos con configuraciones
 	        for (int i = 0; i < ordered.size(); i++) {
 	            votes.add(new MutableInt2D(i, 0));
 	        }
 	        
-	        for(int i = 0; i < k; i++) {
-            	votes.get(ordered.get(i).x).y += 1;	            	
-            }
+	        if(moreThanFive == false) {
+		        for(int i = 0; i < k; i++) 
+	            	votes.get(ordered.get(i).x).y += 1;	
+	        }else {
+	        	 String configurations[] = css.getConfigurations();
+	        	for(int i = 0; i < configurations.length; i++) {
+	        		if(ordered.get(i).y > 5)
+	        			votes.get(ordered.get(i).x).y += 1;	
+	        	}	        	
+	        }
 	        
-	        return votes;
-	    	
+	        return votes;	    	
 	    }
 
 		

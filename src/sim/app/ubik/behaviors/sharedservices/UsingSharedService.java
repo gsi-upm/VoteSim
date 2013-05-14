@@ -61,6 +61,9 @@ public class UsingSharedService extends SimpleState {
          
          else if (codeOfNegotiation == 7) 
          	vm = new RangeWeightVotingMethod(css);
+         
+         else if (codeOfNegotiation == 8) 
+          	vm = new ApprovalVotingMethod(css, true);
      }
 
     @Override
@@ -80,9 +83,7 @@ public class UsingSharedService extends SimpleState {
         if(css==null){
             this.setFinished(true);
             return;
-        }      
-        
-        
+        }   
       
     }
     
