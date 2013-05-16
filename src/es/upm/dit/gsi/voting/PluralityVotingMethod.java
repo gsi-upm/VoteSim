@@ -54,11 +54,13 @@ public class PluralityVotingMethod extends VotingMethod {
         
         /* Se cogen los votos de cada usuario y se suman en las votaciones globales */
         for (UserInterface ui : css.getUsers()) {
+        	ordered = ui.getNegotiation().getOrderedPreferences(css);
             for (int i = 0; i < configurations.length; i++) {            
             	ArrayList<MutableInt2D> userVotes = getUserVotes(ui);
             	votes.get(ordered.get(i).x).y += userVotes.get(ordered.get(i).x).y;	
             }
         }
+
         return votes;
     }
     

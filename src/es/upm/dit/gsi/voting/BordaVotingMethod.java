@@ -70,7 +70,6 @@ public class BordaVotingMethod extends VotingMethod {
         for(int i = 0; i < ordered.size(); i++) {
         	votes.get(ordered.get(i).x).y += ordered.size()-(i+1);	            	
         }
-        
         return votes;
     	
     }    

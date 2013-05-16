@@ -26,12 +26,28 @@ import sim.app.ubik.utils.GenericLogger;
  */
 public class SharedServicesSimBatch {
 
-    static int experiments = 2; //por ahora pongamos 20
-    static int timeForExperiment = 300;//intentemos a 3000
+    static int experiments = 20; //por ahora pongamos 20
+    static int timeForExperiment = 3000;//intentemos a 3000
     static ArrayList<String> headings;
     static String fileName;
-    static final int votingMethods=2;
-    static final int preselectionMethods=2;
+    //static final int votingMethods=2;
+    static final int preselectionMethods=1;
+    
+    /* 
+     * Voting Methods que se van a ejecutar
+     * 0 = Order of Arrival
+     * 1 = Range voting
+     * 2 = Range voting + acceptable for all
+     * 3 = Plutality
+     * 4 = Cumulative
+     * 5 = Approval
+     * 6 = Borda
+     * 7 = Weight
+     * 8 = Approval more than five
+     */
+    static final int[] votingMethods = {0,1,3,4,6,7};
+    
+    
     public static void main(String[] args) throws IOException {
 
       
@@ -53,7 +69,7 @@ public class SharedServicesSimBatch {
         headings = new ArrayList<String>();//cabeceras extra para cada generic logger
        // for (int i = 0; i < 1; i++) {//cada función de satisfacción hasta i 2
             for (int j = 0; j < preselectionMethods; j++) {//cada preselección, hasta j3
-                for (int z = 0; z < votingMethods; z++) {//cada negociacion, hsata z 4
+                for (int z : votingMethods) {//Los definidos arriba
                    // UsingSharedService.setCodeOfSatisfactionFuction(i);
                     UsingSharedService.selectionCode = j;
                     UsingSharedService.setCodeOfNegotiation(z);
@@ -66,6 +82,7 @@ public class SharedServicesSimBatch {
                     headings.add(heading);//para media
                     headings.add(heading);//para desviacion
                     deleteTempFiles();
+                    System.out.println("Terminado de ejecutar VotingMethod Numero "+z);
                  
                 }
             //}
