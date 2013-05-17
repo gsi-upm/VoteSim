@@ -123,7 +123,7 @@ public abstract class SharedService extends FixedDomoticDevice {
      * @param ss
      * @return
      */
-    public float getUserSatisfaction(UserInterface ui) {      
+    public double getUserSatisfaction(UserInterface ui) {      
       int preferenceForService=ui.getNegotiation().getPreferences(this).get(this.getCurrentConfiguration()).intValue();
       return calculateSatisfaction(preferenceForService);
     }
@@ -137,7 +137,7 @@ public abstract class SharedService extends FixedDomoticDevice {
      * @author pmoncada
      * @return
      */
-    public float getUserSatisfaction(UserInterface ui, String configuration) {
+    public double getUserSatisfaction(UserInterface ui, String configuration) {
       int preferenceForService=ui.getNegotiation().getPreferences(this).get(configuration).intValue();      
       return calculateSatisfaction(preferenceForService);
     }
@@ -148,7 +148,7 @@ public abstract class SharedService extends FixedDomoticDevice {
      * @param preferenceForService
      * @return
      */
-    public float calculateSatisfaction(int preferenceForService) {
+    public double calculateSatisfaction(int preferenceForService) {
     	if(UsingSharedService.codeOfSatisfactionFunction==0)  return preferenceForService;
         if(UsingSharedService.codeOfSatisfactionFunction>0){
              if(preferenceForService<=4) return 0;
@@ -164,13 +164,13 @@ public abstract class SharedService extends FixedDomoticDevice {
      * @author pmoncada
      * @return 
      */
-    public float getSatisfaction() {
-    	float confSatisfaction = 0;
+    public double getSatisfaction() {
+    	double confSatisfaction = 0;
 		for (UserInterface ui : this.getUsers()) {
 			confSatisfaction += this.getUserSatisfaction(ui);				
 		}
 		
-    	return confSatisfaction/this.getUsers().size();
+    	return confSatisfaction;
     }
     
     /**
@@ -179,13 +179,13 @@ public abstract class SharedService extends FixedDomoticDevice {
      * @author pmoncada
      * @return 
      */
-    public float getSatisfaction(String configuration) {
-    	float confSatisfaction = 0;
+    public double getSatisfaction(String configuration) {
+    	double confSatisfaction = 0;
 		for (UserInterface ui : this.getUsers()) {
 			confSatisfaction += this.getUserSatisfaction(ui, configuration);				
 		}
 		
-    	return confSatisfaction/this.getUsers().size();
+    	return confSatisfaction;
     }
     
     /**
@@ -194,11 +194,11 @@ public abstract class SharedService extends FixedDomoticDevice {
 	 * @author pmoncada
 	 * @return Max satisfaction
 	 */
-	public float getMaxSatisfaction() {
-		float maxSatisfaction = 0;
+	public double getMaxSatisfaction() {
+		double maxSatisfaction = 0;
 		
 		for (String conf : this.getConfigurations()) {
-			float confSatisfaction = getSatisfaction(conf);
+			double confSatisfaction = getSatisfaction(conf);
 			if(confSatisfaction > maxSatisfaction)	
 				maxSatisfaction = confSatisfaction;			
 
@@ -216,11 +216,11 @@ public abstract class SharedService extends FixedDomoticDevice {
 	 * @author pmoncada
 	 * @return Min satisfaction
 	 */
-	public float getMinSatisfaction() {
-		float minSatisfaction = Float.MAX_VALUE;
+	public double getMinSatisfaction() {
+		double minSatisfaction = Double.MAX_VALUE;
 		
 		for (String conf : this.getConfigurations()) {
-			float confSatisfaction = getSatisfaction(conf);
+			double confSatisfaction = getSatisfaction(conf);
 			if(confSatisfaction < minSatisfaction)	
 				minSatisfaction = confSatisfaction;			
 
@@ -237,8 +237,8 @@ public abstract class SharedService extends FixedDomoticDevice {
 	 * @author pmoncada
 	 * @return
 	 */
-	public float getServiceSatisfaction() {
-		float servSatisfaction = this.getSatisfaction();
+	public double getServiceSatisfaction() {
+		double servSatisfaction = this.getSatisfaction();
 		
 		if(Preferences.echo)
 			System.out.println("servSatisfaction="+servSatisfaction);
@@ -251,14 +251,29 @@ public abstract class SharedService extends FixedDomoticDevice {
 	 * @author pmoncada
 	 * @return Satisfaccion normalizada
 	 */
-	public float getNormServSas() {
-		float minSatisfaction = getMinSatisfaction();
-		float normServSas = (getServiceSatisfaction()-minSatisfaction)/(getMaxSatisfaction()-minSatisfaction);
+	public double getNormServSas() {
+		double minSatisfaction = getMinSatisfaction();
+		double normServSas = (getServiceSatisfaction()-minSatisfaction)/(getMaxSatisfaction()-minSatisfaction);
 		
 		if(Preferences.echo)
 			System.out.println("normServSas="+normServSas+"\n");
 		
 		return normServSas;
+	}
+	
+	/**
+	 * Se calcula realizando la suma de la satisfacción de todos los usuarios y dividiendo entre el número de usuarios*10.
+	 * @author pmoncada
+	 * @return Satisfacción acotada entre [0,1]
+	 */
+	public double getBoundedServiceSatisfaction() {
+		
+		double boundedServSas = this.getSatisfaction()/(this.getUsers().size()*10);
+	
+		if(Preferences.echo)
+			System.out.println("boundedServSas="+boundedServSas+"\n");
+		return boundedServSas;
+		
 	}
 
 }

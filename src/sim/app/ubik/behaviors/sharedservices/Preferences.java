@@ -24,7 +24,7 @@ import weka.core.Instance;
  */
 public class Preferences {
 
-    public static boolean echo = false;
+    public static boolean echo = true;
 
  
     protected UserInterface user;

@@ -26,8 +26,8 @@ import sim.app.ubik.utils.GenericLogger;
  */
 public class SharedServicesSimBatch {
 
-    static int experiments = 20; //por ahora pongamos 20
-    static int timeForExperiment = 3000;//intentemos a 3000
+    static int experiments = 1; //por ahora pongamos 20
+    static int timeForExperiment = 2000;//intentemos a 3000
     static ArrayList<String> headings;
     static String fileName;
     //static final int votingMethods=2;

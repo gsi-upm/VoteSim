@@ -34,8 +34,8 @@ public class MonitorService implements Steppable, Stoppable {
     
     public MutableDouble satisfactionPerUsers = new MutableDouble(0);   
     public MutableDouble satisfactionAccumulated= new MutableDouble(0);
-    public float globalSatisfaction = 0;
-    public float globalSatisfactionAccumulated;
+    public double globalSatisfaction = 0;
+    public double globalSatisfactionAccumulated;
     private static int step;
     public MutableDouble usersWithAcceptableConfigurations= new MutableDouble(0);
     public MutableDouble usersWithAcceptableConfigurationsAccumulated= new MutableDouble(0);
@@ -60,7 +60,7 @@ public class MonitorService implements Steppable, Stoppable {
     public void step(SimState ss) {
 
          //actualizar lista de momentos de conflicto y contadores de satisfaccion
-        float satisfactionCounter = 0;
+        double satisfactionCounter = 0;
         int momentOfConflict=0;//flag, 1 menas that there have been a conflict
         globalSatisfaction = 0;
         step++;
@@ -90,15 +90,22 @@ public class MonitorService implements Steppable, Stoppable {
                 numberOfUsersUsingServices=numberOfUsers;
                 text += line + line;
                 //System.out.println("Max satisfaction: "+Negotiation.getMaxSatisfaction(serv)+"/"+(serv.getUsers().size()*10)+" for service "+serv.getName());
-                globalSatisfaction += serv.getNormServSas();    
+                globalSatisfaction += serv.getBoundedServiceSatisfaction();    
             }
             
             
         }
         globalSatisfaction = globalSatisfaction/listss.size();
         
-        if(!Float.isNaN(globalSatisfaction) && globalSatisfaction <= 1)
+        if(!Double.isNaN(globalSatisfaction) && globalSatisfaction <= 1)
         	globalSatisfactionAccumulated = globalSatisfactionAccumulated + globalSatisfaction;
+        
+        if(Preferences.echo) {
+	        System.out.println("GlobalSatisfactionAcummulated sin dividir: "+globalSatisfactionAccumulated);
+	        System.out.println("Moments of conflict: "+momentsOfConflict.val);
+	        System.out.println("Global dividida: "+satisfactionAccumulated.val);
+        }
+        
 
         
         if(momentOfConflict==1 ){
@@ -106,9 +113,8 @@ public class MonitorService implements Steppable, Stoppable {
               	
         	log.finest("Step: "+step);
         	log.finest("SAS: "+globalSatisfaction);
-        	log.finest("Accumulated SAS: "+globalSatisfactionAccumulated/step);
-         
-           
+        	log.finest("Accumulated SAS: "+globalSatisfactionAccumulated);
+                    
             
            //satisfactionPerUsers.val =   satisfactionCounter / ((double) numberOfUsers);  
             
@@ -116,7 +122,7 @@ public class MonitorService implements Steppable, Stoppable {
          
            //satisfactionAccumulated.val = satisfactionAccumulated.val +  satisfactionPerUsers.val;
            
-           satisfactionAccumulated.val = globalSatisfactionAccumulated;
+           satisfactionAccumulated.val = globalSatisfactionAccumulated/momentsOfConflict.val;
            
            usersWithAcceptableConfigurations.val =  usersWithAcceptableConfigurationsCounter / ((double) numberOfUsers);
            usersWithAcceptableConfigurationsAccumulated.val +=  usersWithAcceptableConfigurations.val ;                       
