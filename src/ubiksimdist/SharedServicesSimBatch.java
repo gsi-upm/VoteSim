@@ -26,12 +26,12 @@ import sim.app.ubik.utils.GenericLogger;
  */
 public class SharedServicesSimBatch {
 
-    static int experiments = 1; //por ahora pongamos 20
+    static int experiments = 3; //por ahora pongamos 20
     static int timeForExperiment = 2000;//intentemos a 3000
     static ArrayList<String> headings;
     static String fileName;
     //static final int votingMethods=2;
-    static final int preselectionMethods=1;
+    //static final int preselectionMethods=1;
     
     /* 
      * Voting Methods que se van a ejecutar
@@ -45,7 +45,18 @@ public class SharedServicesSimBatch {
      * 7 = Weight
      * 8 = Approval more than five
      */
-    static final int[] votingMethods = {0,1,3,4,6,7};
+    static final int[] votingMethods = {0};
+    
+    /*
+     * Preselection Methods que se van a usar
+     * 0 = Closest (No preselection)
+     * 1 = Common / wanted users
+     * 2 = K-means clustering
+     * 3 = EM Clustering
+     * 4 = Euclidean distance
+     * 5 = Manhattan distance 
+     */
+    static final int[] preselectionMethods = {5};
     
     
     public static void main(String[] args) throws IOException {
@@ -68,9 +79,15 @@ public class SharedServicesSimBatch {
         ArrayList<GenericLogger> r = new ArrayList<GenericLogger>();
         headings = new ArrayList<String>();//cabeceras extra para cada generic logger
        // for (int i = 0; i < 1; i++) {//cada función de satisfacción hasta i 2
-            for (int j = 0; j < preselectionMethods; j++) {//cada preselección, hasta j3
+            for (int j : preselectionMethods) {
+            	System.out.println("####################################");
+            	System.out.println("Ejecutando preseleccion numero: "+j);
+            	System.out.println("####################################");
                 for (int z : votingMethods) {//Los definidos arriba
                    // UsingSharedService.setCodeOfSatisfactionFuction(i);
+                	System.out.println("******************************************");
+                	System.out.println("Ejecutando Metodo de votacion numero: "+z);
+                	System.out.println("******************************************");
                     UsingSharedService.selectionCode = j;
                     UsingSharedService.setCodeOfNegotiation(z);
                     r.addAll(batchOfExperiments());
@@ -101,12 +118,17 @@ public class SharedServicesSimBatch {
         ArrayList<GenericLogger> listOfResults = new ArrayList<GenericLogger>();
 
         for (int i = 0; i < experiments; i++) {
+        	System.out.println("////////////////////////////////////////");
+        	System.out.println("Ejecucion del experimento numero: "+i);
+        	System.out.println("////////////////////////////////////////");
+        	
             GenericLogger gl1 = oneExperiment(i * 1000);
             listOfResults.add(gl1);
             //w.println("EXPERIMENT " + i + " RESULTS ");
             //w.println(gl1.toString());
         }
 
+        System.out.println(listOfResults);
 
         ArrayList<GenericLogger> r = new ArrayList<GenericLogger>();
         r.add(GenericLogger.getMean(listOfResults));
@@ -127,8 +149,14 @@ public class SharedServicesSimBatch {
         state.start();
         do{
                 if (!state.schedule.step(state)) break;
+        		//if (!state.schedule.step(state)) return oneExperiment(seed+5);
+        		
         }while(state.schedule.getSteps() < timeForExperiment*2);//para que termine desde el monitor
-        state.finish();             
+        state.finish();
+        
+        for(int i = state.ms.gl.getRows(); i < timeForExperiment; i++)
+        	state.ms.gl.addStep(new double[] {0.0, 0.0, 0.0});
+        
         return state.ms.gl;                
     }
 

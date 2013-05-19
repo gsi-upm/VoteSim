@@ -29,6 +29,8 @@ public class MonitorService implements Steppable, Stoppable {
     public  static int momentOfConflictToStop=-1;        
     protected int[] stepsWithoutHavingAWantedService;
     public GenericLogger gl;
+    
+    
 
     
     

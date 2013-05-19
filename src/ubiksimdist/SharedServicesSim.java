@@ -15,7 +15,7 @@ import sim.app.ubik.people.PersonHandler;
  */
 public class SharedServicesSim extends Ubik {
    
-    public static int maxTimeForExecution=2000;
+    public static int maxTimeForExecution = 10000;
     public MonitorService ms;
     
     /**
