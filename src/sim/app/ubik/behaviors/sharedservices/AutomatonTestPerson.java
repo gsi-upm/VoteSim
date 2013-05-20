@@ -26,7 +26,7 @@ public class AutomatonTestPerson extends Automaton {
  
          
     protected static final float CHANGEOFROOM= (float) 0.05; //probabilidad de salir de sitio inicial
-    protected static final int MAXSTAY=250;//estancia máxima (antes de dejar sitio inicial y en sitios a los que se va)    
+    protected static final int MAXSTAY=100;//estancia máxima (antes de dejar sitio inicial y en sitios a los que se va)    
     protected TestPerson p =  (TestPerson) personImplementingAutomaton; 
     
     
@@ -51,26 +51,42 @@ public class AutomatonTestPerson extends Automaton {
     public ArrayList<Automaton> createNewTransitions(SimState simState) {
       ArrayList<Automaton> r =   new ArrayList<Automaton>();            
       //transiciones al margen de emergencias
-      if(!this.isTransitionPlanned("goHall") && p.getUbik().random.nextFloat()<CHANGEOFROOM){         
-        addTransitionsToGoToHall(r);
+      if(!this.isTransitionPlanned("goHall") && !this.isTransitionPlanned("goBackRoom") && p.getUbik().random.nextFloat()<CHANGEOFROOM){         
+        addTransitionsToGoToHallTeleporting(r);
       }
 
       return r;
     }
 
     
-    /**
+        /**
      * Comportamiento por defecto al margen de emergencias, ir al hall (posición aleatoria), esperar, volver a habitación, esperar
      * @param r Lista de transiciones a la que añadir
      */
+    private void addTransitionsToGoToHallTeleporting(  ArrayList<Automaton> r) {
+               
+          r.add(new DoNothing(p,0,p.getUbik().random.nextInt(MAXSTAY),"goHall"));//esperar en sitio, nombre "go" para controlar nuevas transiciones         
+          r.add(new Teleport(p,0,-1,"goHall",PositionTools.getRoom(p, "HALL")));//ir
+          r.add(new UsingSharedService(p,0,p.getUbik().random.nextInt(MAXSTAY),"usingService"));//esperar, nombre "go" para controlar nuevas transiciones                           
+          r.add(new Teleport(p,0,-1,"goBackRoom", p.getInitialPosition()));
+                         
+    }
+    
+    
+    /**
+     * Comportamiento por defecto al margen de emergencias, ir al hall (posición aleatoria), esperar, volver a habitación, esperar
+     * @param r Lista de transiciones a la que añadir
+     * @deprecated Some problems generating route, use teleporting
+     */
     private void addTransitionsToGoToHall(  ArrayList<Automaton> r) {
-          Move.FINISHIFPATHNOTGENERATED=true;
+          Move.FINISHIFPATHNOTGENERATED=true;          
+          r.add(new DoNothing(p,0,p.getUbik().random.nextInt(MAXSTAY),"goHall"));//esperar en sitio, nombre "go" para controlar nuevas transiciones   
           Int2D destiny=  PositionTools.getRandomPositionInRoom(p, PositionTools.getRoom(p, "HALL"));
           r.add(new Move(p,0,-1,"goHall",destiny.x,destiny.y));//ir
           r.add(new UsingSharedService(p,0,p.getUbik().random.nextInt(MAXSTAY),"usingService"));//esperar, nombre "go" para controlar nuevas transiciones                   
           destiny=  PositionTools.getRandomPositionInRoom(p, p.getInitialPosition());
           r.add(new Move(this.personImplementingAutomaton,0,-1,"goHall", destiny.x, destiny.y));
-          r.add(new DoNothing(p,0,p.getUbik().random.nextInt(MAXSTAY),"goHall"));//esperar en sitio, nombre "go" para controlar nuevas transiciones                    
+                         
     }
 
        
