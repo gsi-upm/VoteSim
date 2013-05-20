@@ -109,8 +109,6 @@ public class MonitorService implements Steppable, Stoppable {
         
         /* Ya se han terminado de ver todos los sercvicios en conclicto que ha habido */
         
-
-        
         if(momentOfConflict==1 ){
         	
             //actualizar el contador de tiempo sin servicio querido
@@ -119,14 +117,16 @@ public class MonitorService implements Steppable, Stoppable {
         	
         	/* Se calcula la media de satisfaccion dividiendo entre el numero de servicios en conflicto que han contribuido */
         	globalSatisfaction = globalSatisfaction/servicesWithConflict.val;
-            
-        	/* Se actualiza la satisfaccion acumulada */
-	        globalSatisfactionAccumulated = globalSatisfactionAccumulated + globalSatisfaction;
         	
-            satisfactionPerUsers.val  = globalSatisfaction;
+        	
+        	/* Se actualiza la satisfaccion acumulada */
+	        globalSatisfactionAccumulated = satisfactionAccumulated.val*(momentsOfConflict.val-1) + globalSatisfaction;
+        	
+           satisfactionPerUsers.val  = globalSatisfaction;
          
            /* Se actualiza el valor de la acumulada, que para que este entre 0 y 1 se divide entre el numero de momentos en conflicto */
            satisfactionAccumulated.val = globalSatisfactionAccumulated/momentsOfConflict.val;
+           
            
            usersWithAcceptableConfigurations.val =  usersWithAcceptableConfigurationsCounter / ((double) numberOfUsers);
            usersWithAcceptableConfigurationsAccumulated.val +=  usersWithAcceptableConfigurations.val ;    
@@ -150,6 +150,7 @@ public class MonitorService implements Steppable, Stoppable {
    	        System.out.println("Moments of conflict: "+momentsOfConflict.val);
    	        System.out.println("Servicios en conflicto: "+servicesWithConflict.val);
    	        System.out.println("Global dividida: "+satisfactionAccumulated.val);
+   	        System.out.println("");
            }
             
         }
