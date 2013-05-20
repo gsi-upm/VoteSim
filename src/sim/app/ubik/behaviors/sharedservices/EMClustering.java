@@ -50,10 +50,10 @@ public class EMClustering {
             AbstractClusterer ac=  clusteringOfUsers();            
             if(ac==null) return slist.get(ubik.random.nextInt(slist.size())); // no había instancias, servicio aleatorio            
             int cluster= ac.clusterInstance(instance);                
-            if(echo){
-                System.out.println(ui.getName() + ", recommended service: " + slist.get(cluster).getName());
-                System.out.println(ac.toString());              
-            }
+            // if(echo){
+               // System.out.println(ui.getName() + ", recommended service: " + slist.get(cluster).getName());
+               // System.out.println(ac.toString());              
+            // }
             return slist.get(cluster);
         } catch (Exception ex) {
             ex.printStackTrace();

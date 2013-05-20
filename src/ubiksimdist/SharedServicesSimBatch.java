@@ -31,7 +31,7 @@ import sim.app.ubik.utils.GenericLogger;
 public class SharedServicesSimBatch {
 
     static int experiments = 20; //por ahora pongamos 20
-    static int timeForExperiment = 1200;//intentemos a 3000
+    static int timeForExperiment = 2000;//intentemos a 3000
     static ArrayList<String> headings;
     static String fileName;
     //static final int votingMethods=2;
@@ -49,7 +49,7 @@ public class SharedServicesSimBatch {
      * 7 = Weight
      * 8 = Approval more than five
      */
-    static final int[] votingMethods = {0,1,3};
+    static final int[] votingMethods = {0,1,2,3,4,5,6,7,8};
     
     /*
      * Preselection Methods que se van a usar
@@ -60,7 +60,7 @@ public class SharedServicesSimBatch {
      * 4 = Euclidean distance
      * 5 = Manhattan distance 
      */
-    static final int[] preselectionMethods = {0};
+    static final int[] preselectionMethods = {0,1,2,3,4,5};
     
     
     public static void main(String[] args) throws IOException {
@@ -125,10 +125,9 @@ public class SharedServicesSimBatch {
         	System.out.println("////////////////////////////////////////");
         	System.out.println("Ejecucion del experimento numero: "+i);
         	System.out.println("////////////////////////////////////////");
+
         	
-        	Random generator = new Random();
-        	int newSeed =  generator.nextInt(100000);
-            GenericLogger gl1 = oneExperiment(newSeed);
+            GenericLogger gl1 = oneExperiment(i*1000);
             listOfResults.add(gl1);
             //w.println("EXPERIMENT " + i + " RESULTS ");
             //w.println(gl1.toString());
