@@ -98,47 +98,44 @@ public class MonitorService implements Steppable, Stoppable {
                 numberOfUsersUsingServices=numberOfUsers;
                 text += line + line;
                 //System.out.println("Max satisfaction: "+Negotiation.getMaxSatisfaction(serv)+"/"+(serv.getUsers().size()*10)+" for service "+serv.getName());
+                
+                /* Se suma la satisfaccion que aporta cada servicio en conflicto */
                 globalSatisfaction += serv.getBoundedServiceSatisfaction();    
             }
             
             
         }
-        globalSatisfaction = globalSatisfaction/servicesWithConflict.val;
+
         
-        if(!Double.isNaN(globalSatisfaction) && globalSatisfaction <= 1)
-        	globalSatisfactionAccumulated = globalSatisfactionAccumulated + globalSatisfaction;
-        
-        if(Preferences.echo) {
-	        System.out.println("GlobalSatisfactionAcummulated sin dividir: "+globalSatisfactionAccumulated);
-	        System.out.println("Moments of conflict: "+momentsOfConflict.val);
-	        System.out.println("Servicios en conflicto: "+servicesWithConflict.val);
-	        System.out.println("Global dividida: "+satisfactionAccumulated.val);
-        }
+        /* Ya se han terminado de ver todos los sercvicios en conclicto que ha habido */
         
 
         
         if(momentOfConflict==1 ){
         	
-              	
-        	log.finest("Step: "+step);
-        	log.finest("SAS: "+globalSatisfaction);
-        	log.finest("Accumulated SAS: "+globalSatisfactionAccumulated);
-                    
+            //actualizar el contador de tiempo sin servicio querido
+            updateStepsWithoutHavingAWantedService();
+            momentsOfConflict.val++;
+        	
+        	/* Se calcula la media de satisfaccion dividiendo entre el numero de servicios en conflicto que han contribuido */
+        	globalSatisfaction = globalSatisfaction/servicesWithConflict.val;
             
-           //satisfactionPerUsers.val =   satisfactionCounter / ((double) numberOfUsers);  
-            
+        	/* Se actualiza la satisfaccion acumulada */
+	        globalSatisfactionAccumulated = globalSatisfactionAccumulated + globalSatisfaction;
+        	
             satisfactionPerUsers.val  = globalSatisfaction;
          
-           //satisfactionAccumulated.val = satisfactionAccumulated.val +  satisfactionPerUsers.val;
-           
+           /* Se actualiza el valor de la acumulada, que para que este entre 0 y 1 se divide entre el numero de momentos en conflicto */
            satisfactionAccumulated.val = globalSatisfactionAccumulated/momentsOfConflict.val;
            
            usersWithAcceptableConfigurations.val =  usersWithAcceptableConfigurationsCounter / ((double) numberOfUsers);
-           usersWithAcceptableConfigurationsAccumulated.val +=  usersWithAcceptableConfigurations.val ;                       
+           usersWithAcceptableConfigurationsAccumulated.val +=  usersWithAcceptableConfigurations.val ;    
+           
+           log.finest("Step: "+step);
+           log.finest("SAS: "+globalSatisfaction);
+           log.finest("Accumulated SAS: "+globalSatisfactionAccumulated);
             
-           //actualizar el contador de tiempo sin servicio querido
-           updateStepsWithoutHavingAWantedService();
-           momentsOfConflict.val++;
+
            
            double toLog[]= {this.satisfactionAccumulated.val, this.usersWithAcceptableConfigurationsAccumulated.val, this.maxWithoutService.val};
            gl.addStep(toLog);
@@ -147,6 +144,13 @@ public class MonitorService implements Steppable, Stoppable {
                System.out.println("End!, acc. satisfaction:" +   usersWithAcceptableConfigurationsAccumulated.val);            
                ubik.kill();
             }
+           
+           if(Preferences.echo) {
+   	        System.out.println("GlobalSatisfactionAcummulated sin dividir: "+globalSatisfactionAccumulated);
+   	        System.out.println("Moments of conflict: "+momentsOfConflict.val);
+   	        System.out.println("Servicios en conflicto: "+servicesWithConflict.val);
+   	        System.out.println("Global dividida: "+satisfactionAccumulated.val);
+           }
             
         }
         
