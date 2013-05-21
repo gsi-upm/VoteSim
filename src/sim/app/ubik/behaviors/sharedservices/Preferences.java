@@ -87,8 +87,8 @@ public class Preferences {
     public HashMap<String, Integer> getRandomPreferences(SharedService ss) {
         HashMap<String, Integer> p = new HashMap<String, Integer>();
         
-        double prob = Math.random();
-        
+        double prob = user.getUbik().random.nextFloat();
+                
         if(prob>0.5 && eventoAnomalo) {
         	for (int i = 0; i < ss.getConfigurations().length; i++) {
                 p.put(ss.getConfigurations()[i], 0);
