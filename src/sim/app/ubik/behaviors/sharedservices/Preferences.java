@@ -25,6 +25,7 @@ import weka.core.Instance;
 public class Preferences {
 
     public static boolean echo = true;
+    public static boolean eventoAnomalo = true;
 
  
     protected UserInterface user;
@@ -85,8 +86,18 @@ public class Preferences {
      */
     public HashMap<String, Integer> getRandomPreferences(SharedService ss) {
         HashMap<String, Integer> p = new HashMap<String, Integer>();
-        for (int i = 0; i < ss.getConfigurations().length; i++) {
-            p.put(ss.getConfigurations()[i], user.getUbik().random.nextInt(upperBoundForCalification + 1));
+        
+        double prob = Math.random();
+        
+        if(prob>0.5 && eventoAnomalo) {
+        	for (int i = 0; i < ss.getConfigurations().length; i++) {
+                p.put(ss.getConfigurations()[i], 0);
+            }
+        	p.put("sports", 10);
+        }else {        	
+        	for (int i = 0; i < ss.getConfigurations().length; i++) {
+                p.put(ss.getConfigurations()[i], user.getUbik().random.nextInt(upperBoundForCalification + 1));
+            }
         }
 
         return p;

@@ -27,16 +27,13 @@ import sim.app.ubik.utils.GenericLogger;
  * Clase para experimentación de servicios compartidos.
  * Cuidado! se acaba la memoria de montón, no poner más de 12 tandas de 1000 experimentos
  * @author Emilio Serrano, emilioserra@um.es
+ * @author Pablo Moncada, pmoncada@dit.upm.es
  */
 public class SharedServicesSimBatch {
 
-    static int experiments = 20; //por ahora pongamos 20
-    static int timeForExperiment = 2000;//intentemos a 3000
-    static ArrayList<String> headings;
-    static String fileName;
-    //static final int votingMethods=2;
-    //static final int preselectionMethods=1;
-    
+    static int experiments = 20;
+    static int timeForExperiment = 2000;  
+
     /* 
      * Voting Methods que se van a ejecutar
      * 0 = Order of Arrival
@@ -49,7 +46,7 @@ public class SharedServicesSimBatch {
      * 7 = Weight
      * 8 = Approval more than five
      */
-    static final int[] votingMethods = {0,1,2,3,4,5,6,7,8};
+    static final int[] votingMethods = {0,1,3,4,5,6,7};
     
     /*
      * Preselection Methods que se van a usar
@@ -60,8 +57,11 @@ public class SharedServicesSimBatch {
      * 4 = Euclidean distance
      * 5 = Manhattan distance 
      */
-    static final int[] preselectionMethods = {0,1,2,3,4,5};
+    static final int[] preselectionMethods = {1,2};
     
+    
+    static ArrayList<String> headings;
+    static String fileName;
     
     public static void main(String[] args) throws IOException {
 

@@ -98,7 +98,7 @@ public class EMClustering {
             EM em = new EM();
             em.setNumClusters(clusters);               
             em.buildClusterer(ins);
-            System.out.println(em.toString());
+            //System.out.println(em.toString());
             return em;
 
         } catch (Exception ex) {
