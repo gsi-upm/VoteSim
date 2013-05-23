@@ -1,7 +1,39 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+* 
+* 
+* This file is part of VoteSim. VoteSim is a UbikSim library. 
+* 
+* VoteSim has been developed by members of the research Group on 
+* Intelligent Systems [GSI] (Grupo de Sistemas Inteligentes), 
+* acknowledged group by the Universidad Politécnica de Madrid [UPM] 
+* (Technical University of Madrid) 
+* 
+* Authors:
+* Emilio Serrano
+* Pablo Moncada
+* Mercedes Garijo
+* Carlos A. Iglesias
+* 
+* Contact: 
+* http://www.gsi.dit.upm.es/;
+* 
+* 
+* 
+* VoteSim, as UbikSim, is free software: 
+* you can redistribute it and/or modify it under the terms of the GNU 
+* General Public License as published by the Free Software Foundation, 
+* either version 3 of the License, or (at your option) any later version. 
+*
+* 
+* VoteSim is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with VoteSim. If not, see <http://www.gnu.org/licenses/>
  */
+
 package ubiksimdist;
 
 
@@ -26,8 +58,6 @@ import sim.app.ubik.utils.GenericLogger;
 /**
  * Clase para experimentación de servicios compartidos.
  * Cuidado! se acaba la memoria de montón, no poner más de 12 tandas de 1000 experimentos
- * @author Emilio Serrano, emilioserra@um.es
- * @author Pablo Moncada, pmoncada@dit.upm.es
  */
 public class SharedServicesSimBatch {
 
@@ -57,7 +87,7 @@ public class SharedServicesSimBatch {
      * 4 = Euclidean distance
      * 5 = Manhattan distance 
      */
-    static final int[] preselectionMethods = {0,2,3,4,5};
+    static final int[] preselectionMethods = {0,4};
     
     
     static ArrayList<String> headings;
@@ -82,20 +112,21 @@ public class SharedServicesSimBatch {
 
         ArrayList<GenericLogger> r = new ArrayList<GenericLogger>();
         headings = new ArrayList<String>();//cabeceras extra para cada generic logger
-       // for (int i = 0; i < 1; i++) {//cada función de satisfacción hasta i 2
+        
             for (int j : preselectionMethods) {
+            	
             	System.out.println("####################################");
             	System.out.println("Ejecutando preseleccion numero: "+j);
             	System.out.println("####################################");
+            	
                 for (int z : votingMethods) {//Los definidos arriba
-                   // UsingSharedService.setCodeOfSatisfactionFuction(i);
+                	
                 	System.out.println("******************************************");
                 	System.out.println("Ejecutando Metodo de votacion numero: "+z);
                 	System.out.println("******************************************");
                     UsingSharedService.selectionCode = j;
                     UsingSharedService.setCodeOfNegotiation(z);
                     r.addAll(batchOfExperiments());
-                    //"satis.function " + UsingSharedService.getCodeOfSatisfactionFuction() +
                     String heading =  " preselection " + UsingSharedService.selectionCode + " votingS " + UsingSharedService.getCodeOfNegotiation();
                     PrintWriter w3 = new PrintWriter(new BufferedWriter(new FileWriter(fileName + " output.txt", true)));
                     w3.println( heading + " " + (new Date()).toString());
@@ -106,7 +137,6 @@ public class SharedServicesSimBatch {
                     System.out.println("Terminado de ejecutar VotingMethod Numero "+z);
                  
                 }
-            //}
         }
         return r;
     }
@@ -125,12 +155,9 @@ public class SharedServicesSimBatch {
         	System.out.println("////////////////////////////////////////");
         	System.out.println("Ejecucion del experimento numero: "+i);
         	System.out.println("////////////////////////////////////////");
-
         	
             GenericLogger gl1 = oneExperiment(i*1000);
             listOfResults.add(gl1);
-            //w.println("EXPERIMENT " + i + " RESULTS ");
-            //w.println(gl1.toString());
         }
 
         System.out.println(listOfResults);
@@ -144,7 +171,6 @@ public class SharedServicesSimBatch {
 
     /**
      * Un experimento simple
-     *
      * @param seed
      * @return
      */
@@ -153,19 +179,12 @@ public class SharedServicesSimBatch {
        SharedServicesSim state = new SharedServicesSim(seed,timeForExperiment );
         state.start();               
         do{        		
-                if (!state.schedule.step(state)) {
-                	//JOptionPane.showMessageDialog(null,
-                		    //"number of rows in log " + state.ms.gl.log.size() );                	
-                	break;
-                }
-        		//if (!state.schedule.step(state)) return oneExperiment(seed+5);
+                if (!state.schedule.step(state))             	
+                	break;                
         		
         }while(state.ms.momentsOfConflict.val<  MonitorService.momentOfConflictToStop*2);//para que termine desde el monitor
         state.finish();
-        
-        //for(int i = state.ms.gl.getRows(); i < timeForExperiment; i++)
-        	//state.ms.gl.addStep(new double[] {0.0, 0.0, 0.0});
-        
+
         return state.ms.gl;                
     }
 
@@ -174,13 +193,10 @@ public class SharedServicesSimBatch {
         FileUtils.deleteDirectory(f);                   
     }
 
-    private static void printInFile(ArrayList<GenericLogger> r) throws IOException {
-
-    
+    private static void printInFile(ArrayList<GenericLogger> r) throws IOException {    
                 
         PrintWriter w1 = new PrintWriter(new BufferedWriter(new FileWriter(fileName + " mean.txt", false)));
-        PrintWriter w2 = new PrintWriter(new BufferedWriter(new FileWriter(fileName + " sd.txt", false)));
-        
+        PrintWriter w2 = new PrintWriter(new BufferedWriter(new FileWriter(fileName + " sd.txt", false)));        
         
         //headings
          w1.print("step\t");
