@@ -44,7 +44,7 @@ import sim.display.GUIState;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 import sim.engine.Stoppable;
-import ubiksimdist.SharedServicesSim;
+import votesimdist.VoteSim;
 
 public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, Stoppable {
 
@@ -53,14 +53,14 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
      */    
     
     protected MonitorService ms;
-    protected SharedServicesSim sss;
+    protected VoteSim sss;
     protected Ubik ubik;
     protected boolean extraInitDone=false;//init when the monitor service has been created
 
     
     public MonitorServiceGUI(GUIState guiState) {
         initComponents(); 
-        sss =((SharedServicesSim) guiState.state); 
+        sss =((VoteSim) guiState.state); 
         ubik=sss;
         ms = sss.ms;
         ubik.schedule.scheduleRepeating(this);
@@ -368,7 +368,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcombonegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombonegActionPerformed
-        UsingSharedService.setCodeOfNegotiation(jcomboneg.getSelectedIndex());
+        AgreementServiceAgent.setCodeOfNegotiation(jcomboneg.getSelectedIndex());
         clearLogs();
     }//GEN-LAST:event_jcombonegActionPerformed
 
@@ -409,7 +409,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
     }//GEN-LAST:event_chart4ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-       UsingSharedService.selectionCode= this.jComboBox1.getSelectedIndex();
+       AgreementServiceAgent.selectionCode= this.jComboBox1.getSelectedIndex();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -453,7 +453,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
     public void step(SimState ss) {
         if(!this.extraInitDone){
              
-            jcomboneg.setSelectedIndex(UsingSharedService.codeOfNegotiation);           
+            jcomboneg.setSelectedIndex(AgreementServiceAgent.codeOfNegotiation);           
             jSpinnerAgents.getModel().setValue(ubik.getBuilding().getFloor(0).getPersonHandler().getPersons().size());
             extraInitDone=true;
         }

@@ -44,7 +44,7 @@ import java.util.List;
 import sim.app.ubik.Ubik;
 import sim.app.ubik.behaviors.sharedservices.Preferences;
 import sim.app.ubik.behaviors.sharedservices.UserInterface;
-import sim.app.ubik.behaviors.sharedservices.UsingSharedService;
+import sim.app.ubik.behaviors.sharedservices.AgreementServiceAgent;
 import sim.app.ubik.people.Person;
 import ubik3d.model.HomePieceOfFurniture;
 
@@ -177,8 +177,8 @@ public abstract class SharedService extends FixedDomoticDevice {
      * @return
      */
     public double calculateSatisfaction(int preferenceForService) {
-    	if(UsingSharedService.codeOfSatisfactionFunction==0)  return preferenceForService;
-        if(UsingSharedService.codeOfSatisfactionFunction>0){
+    	if(AgreementServiceAgent.codeOfSatisfactionFunction==0)  return preferenceForService;
+        if(AgreementServiceAgent.codeOfSatisfactionFunction>0){
              if(preferenceForService<=4) return 0;
              if(preferenceForService>4 && preferenceForService<=7) return 5;
              if(preferenceForService>7) return 10;

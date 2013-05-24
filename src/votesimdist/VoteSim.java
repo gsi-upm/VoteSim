@@ -34,7 +34,7 @@
 * along with VoteSim. If not, see <http://www.gnu.org/licenses/>
  */
 
-package ubiksimdist;
+package votesimdist;
 
 import sim.app.ubik.Ubik;
 import sim.app.ubik.behaviors.Automaton;
@@ -42,7 +42,7 @@ import sim.app.ubik.behaviors.sharedservices.MonitorService;
 import sim.app.ubik.people.PersonHandler;
 
 
-public class SharedServicesSim extends Ubik {
+public class VoteSim extends Ubik {
    
     public static int maxTimeForExecution = 10000;
     public MonitorService ms;
@@ -50,19 +50,19 @@ public class SharedServicesSim extends Ubik {
     /**
      * @param args the command line arguments
      */
-    public SharedServicesSim(long seed, int timeForExperiment) {
+    public VoteSim(long seed, int timeForExperiment) {
         super(seed);
         MonitorService.momentOfConflictToStop=timeForExperiment;
                 
     }
     
-    public SharedServicesSim(long seed) {
+    public VoteSim(long seed) {
         super(seed);
         
     }
     
   
-    public SharedServicesSim() {         
+    public VoteSim() {         
            super();
            setSeed(getSeedFromFile());         
     }
@@ -89,7 +89,7 @@ public class SharedServicesSim extends Ubik {
  */
     public static void main(String []args) {
        
-       SharedServicesSim state = new SharedServicesSim(System.currentTimeMillis());
+       VoteSim state = new VoteSim(System.currentTimeMillis());
        state.start();
         do{
                 if (!state.schedule.step(state)) break;

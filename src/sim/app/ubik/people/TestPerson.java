@@ -83,7 +83,7 @@ public class TestPerson extends Person implements UserInterface {
         }
           if(automaton==null) {
          
-             automaton = new sim.app.ubik.behaviors.sharedservices.AutomatonTestPerson(this);
+             automaton = new sim.app.ubik.behaviors.sharedservices.UserAgent(this);
         }
         automaton.nextState(state);
     }

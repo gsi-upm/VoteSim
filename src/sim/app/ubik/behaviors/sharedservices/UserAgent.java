@@ -48,7 +48,7 @@ import sim.app.ubik.people.TestPerson;
 import sim.engine.SimState;
 import sim.util.Int2D;
 
-public class AutomatonTestPerson extends Automaton {
+public class UserAgent extends Automaton {
     
  
          
@@ -58,7 +58,7 @@ public class AutomatonTestPerson extends Automaton {
     
     
     
-   public AutomatonTestPerson(Person personImplementingAutomaton) {
+   public UserAgent(Person personImplementingAutomaton) {
         super(personImplementingAutomaton);
         
     }
@@ -91,7 +91,7 @@ public class AutomatonTestPerson extends Automaton {
                
           r.add(new DoNothing(p,0,p.getUbik().random.nextInt(MAXSTAY),"goHall"));//esperar en sitio, nombre "go" para controlar nuevas transiciones         
           r.add(new Teleport(p,0,-1,"goHall",PositionTools.getRoom(p, "HALL")));//ir
-          r.add(new UsingSharedService(p,0,p.getUbik().random.nextInt(MAXSTAY),"usingService"));//esperar, nombre "go" para controlar nuevas transiciones                           
+          r.add(new AgreementServiceAgent(p,0,p.getUbik().random.nextInt(MAXSTAY),"usingService"));//esperar, nombre "go" para controlar nuevas transiciones                           
           r.add(new Teleport(p,0,-1,"goBackRoom", p.getInitialPosition()));
                          
     }
@@ -107,7 +107,7 @@ public class AutomatonTestPerson extends Automaton {
           r.add(new DoNothing(p,0,p.getUbik().random.nextInt(MAXSTAY),"goHall"));//esperar en sitio, nombre "go" para controlar nuevas transiciones   
           Int2D destiny=  PositionTools.getRandomPositionInRoom(p, PositionTools.getRoom(p, "HALL"));
           r.add(new Move(p,0,-1,"goHall",destiny.x,destiny.y));//ir
-          r.add(new UsingSharedService(p,0,p.getUbik().random.nextInt(MAXSTAY),"usingService"));//esperar, nombre "go" para controlar nuevas transiciones                   
+          r.add(new AgreementServiceAgent(p,0,p.getUbik().random.nextInt(MAXSTAY),"usingService"));//esperar, nombre "go" para controlar nuevas transiciones                   
           destiny=  PositionTools.getRandomPositionInRoom(p, p.getInitialPosition());
           r.add(new Move(this.personImplementingAutomaton,0,-1,"goHall", destiny.x, destiny.y));
                          

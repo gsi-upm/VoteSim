@@ -35,7 +35,7 @@
  */
 
 
-package ubiksimdist;
+package votesimdist;
 
 import ubik3d.SweetHome3D;
 

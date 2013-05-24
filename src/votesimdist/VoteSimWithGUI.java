@@ -35,18 +35,18 @@
  */
 
 
-package ubiksimdist;
+package votesimdist;
 
 import sim.app.ubik.Ubik;
 import sim.app.ubik.UbikSimWithUI;
 import sim.app.ubik.behaviors.sharedservices.MonitorServiceGUI;
 import sim.display.Console;
 
-public class SharedServicesSimWithGUI extends UbikSimWithUI {
+public class VoteSimWithGUI extends UbikSimWithUI {
 
     private MonitorServiceGUI myDisplay;
         
-    public SharedServicesSimWithGUI(Ubik ubik) {
+    public VoteSimWithGUI(Ubik ubik) {
 		super(ubik);		
 	}
 
@@ -71,8 +71,8 @@ public class SharedServicesSimWithGUI extends UbikSimWithUI {
      * @param args 
      */
     public static void main(String []args) {
-        Ubik ubik = new SharedServicesSim();
-        UbikSimWithUI vid = new SharedServicesSimWithGUI(ubik);
+        Ubik ubik = new VoteSim();
+        UbikSimWithUI vid = new VoteSimWithGUI(ubik);
         Console c = new Console(vid);	
         c.setIncrementSeedOnStop(false);
         c.setVisible(true);

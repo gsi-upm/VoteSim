@@ -1,4 +1,4 @@
-/**
+/*
 * 
 * 
 * This file is part of VoteSim. VoteSim is a UbikSim library. 

@@ -168,7 +168,8 @@ public class MonitorService implements Steppable, Stoppable {
                ubik.kill();
             }
            
-           if(Preferences.echo) {
+           if(Preferences.echo) {   
+        	
    	        System.out.println("GlobalSatisfactionAcummulated sin dividir: "+globalSatisfactionAccumulated);
    	        System.out.println("Moments of conflict: "+momentsOfConflict.val);
    	        System.out.println("Servicios en conflicto: "+servicesWithConflict.val);

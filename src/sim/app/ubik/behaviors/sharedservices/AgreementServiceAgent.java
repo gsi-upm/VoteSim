@@ -43,7 +43,7 @@ import sim.app.ubik.domoticDevices.SharedService;
 import sim.app.ubik.people.Person;
 import sim.engine.SimState;
 
-public class UsingSharedService extends SimpleState {  
+public class AgreementServiceAgent extends SimpleState {  
     
      //protected static final String sharedServicesNames[] = {"TV1","TV2","TV3"};
     protected SharedService css;// current shared service
@@ -57,7 +57,7 @@ public class UsingSharedService extends SimpleState {
     
     protected static boolean echo = true;
              
-     public UsingSharedService(Person personImplementingAutomaton, int priority, int duration, String name) {
+     public AgreementServiceAgent(Person personImplementingAutomaton, int priority, int duration, String name) {
          super(personImplementingAutomaton, priority, duration, name);     
          user=(UserInterface) this.personImplementingAutomaton;  
          
@@ -181,15 +181,15 @@ public class UsingSharedService extends SimpleState {
     }
  
 	 public static void setCodeOfSatisfactionFuction(int c) {
-	     UsingSharedService.codeOfSatisfactionFunction = c;
+	     AgreementServiceAgent.codeOfSatisfactionFunction = c;
 	 }
 	
 	   public static int getCodeOfSatisfactionFuction() {
-	     return UsingSharedService.codeOfSatisfactionFunction;
+	     return AgreementServiceAgent.codeOfSatisfactionFunction;
 	 }	     
 	     
 	 public static void setCodeOfNegotiation(int c) {
-		 UsingSharedService.codeOfNegotiation = c;
+		 AgreementServiceAgent.codeOfNegotiation = c;
 	 }
 	 
 	  public static int getCodeOfNegotiation() {

@@ -34,7 +34,7 @@
 * along with VoteSim. If not, see <http://www.gnu.org/licenses/>
  */
 
-package ubiksimdist;
+package votesimdist;
 
 
 import java.io.BufferedWriter;
@@ -52,14 +52,14 @@ import org.apache.commons.io.FileUtils;
 
 import sim.app.ubik.behaviors.sharedservices.MonitorService;
 import sim.app.ubik.behaviors.sharedservices.Preferences;
-import sim.app.ubik.behaviors.sharedservices.UsingSharedService;
+import sim.app.ubik.behaviors.sharedservices.AgreementServiceAgent;
 import sim.app.ubik.utils.GenericLogger;
 
 /**
  * Clase para experimentación de servicios compartidos.
  * Cuidado! se acaba la memoria de montón, no poner más de 12 tandas de 1000 experimentos
  */
-public class SharedServicesSimBatch {
+public class VoteSimBatch {
 
     static int experiments = 20;
     static int timeForExperiment = 2000;  
@@ -124,10 +124,10 @@ public class SharedServicesSimBatch {
                 	System.out.println("******************************************");
                 	System.out.println("Ejecutando Metodo de votacion numero: "+z);
                 	System.out.println("******************************************");
-                    UsingSharedService.selectionCode = j;
-                    UsingSharedService.setCodeOfNegotiation(z);
+                    AgreementServiceAgent.selectionCode = j;
+                    AgreementServiceAgent.setCodeOfNegotiation(z);
                     r.addAll(batchOfExperiments());
-                    String heading =  " preselection " + UsingSharedService.selectionCode + " votingS " + UsingSharedService.getCodeOfNegotiation();
+                    String heading =  " preselection " + AgreementServiceAgent.selectionCode + " votingS " + AgreementServiceAgent.getCodeOfNegotiation();
                     PrintWriter w3 = new PrintWriter(new BufferedWriter(new FileWriter(fileName + " output.txt", true)));
                     w3.println( heading + " " + (new Date()).toString());
                     w3.close();
@@ -176,7 +176,7 @@ public class SharedServicesSimBatch {
      */
     public static GenericLogger oneExperiment(int seed) {
        Preferences.setEcho(false); 
-       SharedServicesSim state = new SharedServicesSim(seed,timeForExperiment );
+       VoteSim state = new VoteSim(seed,timeForExperiment );
         state.start();               
         do{        		
                 if (!state.schedule.step(state))             	
