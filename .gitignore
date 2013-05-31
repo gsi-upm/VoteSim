@@ -1,3 +1,4 @@
+config.props
 handlers/
 nbproject/
 test/
@@ -11,6 +12,7 @@ timeRecords.txt
 
 
 *.class
+*.ubiksim
 build/
 dist/
 
