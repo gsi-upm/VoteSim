@@ -1,4 +1,4 @@
-UbikSimIDE is licensed under the GNU GENERAL PUBLIC LICENSE, version 3.0.
+VoteSim is licensed under the GNU GENERAL PUBLIC LICENSE, version 3.0.
 
 The GNU GENERAL PUBLIC LICENSE is specified below.
 
