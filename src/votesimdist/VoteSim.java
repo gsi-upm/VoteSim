@@ -91,6 +91,7 @@ public class VoteSim extends Ubik {
        
        VoteSim state = new VoteSim(System.currentTimeMillis());
        state.start();
+       
         do{
                 if (!state.schedule.step(state)) break;
         }while(state.schedule.getSteps() < maxTimeForExecution);//

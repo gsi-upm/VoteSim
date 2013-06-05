@@ -54,8 +54,9 @@ public class VoteSimWithGUI extends UbikSimWithUI {
     public void start() {
         super.start();
         myDisplay = new MonitorServiceGUI(this);
-        myDisplay.setVisible(true);
+        myDisplay.setVisible(true);      
         controller.registerFrame(myDisplay);
+        
     }
 
     @Override
@@ -74,6 +75,7 @@ public class VoteSimWithGUI extends UbikSimWithUI {
         Ubik ubik = new VoteSim();
         UbikSimWithUI vid = new VoteSimWithGUI(ubik);
         Console c = new Console(vid);	
+        c.setTitle("VoteSim");
         c.setIncrementSeedOnStop(false);
         c.setVisible(true);
 
