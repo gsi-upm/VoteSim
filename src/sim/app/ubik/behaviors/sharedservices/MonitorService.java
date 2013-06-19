@@ -37,7 +37,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.jfree.util.Log;
 
 import sim.app.ubik.Ubik;
 import sim.app.ubik.domoticDevices.SharedService;
@@ -69,7 +72,8 @@ public class MonitorService implements Steppable, Stoppable {
     public String text="";//texto a mostrar en ventana
     public int numberOfUsersUsingServices;
     
-    Logger log = Logger.getLogger("MonitorService");
+    LoggerSim log = new LoggerSim();
+    
     
     
     public MonitorService(Ubik ubik) {
@@ -77,6 +81,7 @@ public class MonitorService implements Steppable, Stoppable {
         ubik.schedule.scheduleRepeating(this);
         String[] logHeadings={"spu","uwac","mws"};
         gl= new GenericLogger(logHeadings);
+        
       
  
     }
@@ -90,6 +95,7 @@ public class MonitorService implements Steppable, Stoppable {
         globalSatisfaction = 0;
         servicesWithConflict.val = 0;
         step++;
+        
         
         int usersWithAcceptableConfigurationsCounter=0;
         int numberOfUsers = 0;
@@ -156,6 +162,7 @@ public class MonitorService implements Steppable, Stoppable {
            log.finest("Step: "+step);
            log.finest("SAS: "+globalSatisfaction);
            log.finest("Accumulated SAS: "+globalSatisfactionAccumulated);
+           
             
 
            
@@ -163,18 +170,18 @@ public class MonitorService implements Steppable, Stoppable {
            gl.addStep(toLog);
          
            if(momentsOfConflict.val==this.momentOfConflictToStop){    
-               System.out.println("End!, acc. satisfaction:" +   usersWithAcceptableConfigurationsAccumulated.val);            
+        	   log.info("End!, acc. satisfaction:" +   usersWithAcceptableConfigurationsAccumulated.val);            
                ubik.kill();
             }
            
-           if(Preferences.echo) {   
+
         	
-   	        System.out.println("GlobalSatisfactionAcummulated sin dividir: "+globalSatisfactionAccumulated);
-   	        System.out.println("Moments of conflict: "+momentsOfConflict.val);
-   	        System.out.println("Servicios en conflicto: "+servicesWithConflict.val);
-   	        System.out.println("Global dividida: "+satisfactionAccumulated.val);
-   	        System.out.println("");
-           }
+   	        log.info("GlobalSatisfactionAcummulated sin dividir: "+globalSatisfactionAccumulated);
+   	        log.info("Moments of conflict: "+momentsOfConflict.val);
+   	        log.info("Servicios en conflicto: "+servicesWithConflict.val);
+   	     	log.info("Global dividida: "+satisfactionAccumulated.val);
+   	  		log.info("");
+
             
         }
         

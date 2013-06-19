@@ -61,6 +61,7 @@ public class KMeansClustering {
     FastVector attributes;
     boolean echo;
     VotingMethod vm;
+    LoggerSim log = new LoggerSim();
   
     
     public KMeansClustering(Ubik u, VotingMethod vm){
@@ -79,10 +80,10 @@ public class KMeansClustering {
             AbstractClusterer ac=  clusteringOfUsers();            
             if(ac==null) return slist.get(ubik.random.nextInt(slist.size())); // no había instancias, servicio aleatorio            
             int cluster= ac.clusterInstance(instance);                
-            if(echo){
-                System.out.println(ui.getName() + ", recommended service: " + slist.get(cluster).getName());
-                System.out.println(ac.toString());              
-            }
+
+            log.info(ui.getName() + ", recommended service: " + slist.get(cluster).getName());
+            log.info(ac.toString());              
+
             return slist.get(cluster);
         } catch (Exception ex) {
             ex.printStackTrace();

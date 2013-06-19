@@ -5,14 +5,14 @@
 * 
 * VoteSim has been developed by members of the research Group on 
 * Intelligent Systems [GSI] (Grupo de Sistemas Inteligentes), 
-* acknowledged group by the Universidad Politécnica de Madrid [UPM] 
-* (Technical University of Madrid) 
+* acknowledged group by the  Technical University of Madrid [UPM] 
+* (Universidad Politécnica de Madrid) 
 * 
 * Authors:
-* Emilio Serrano
-* Pablo Moncada
 * Mercedes Garijo
 * Carlos A. Iglesias
+* Pablo Moncada
+* Emilio Serrano
 * 
 * Contact: 
 * http://www.gsi.dit.upm.es/;

@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sim.app.ubik.Ubik;
+import sim.app.ubik.behaviors.sharedservices.LoggerSim;
 import sim.app.ubik.behaviors.sharedservices.Preferences;
 import sim.app.ubik.behaviors.sharedservices.UserInterface;
 import sim.app.ubik.behaviors.sharedservices.AgreementServiceAgent;
@@ -57,7 +58,7 @@ public abstract class SharedService extends FixedDomoticDevice {
 	protected static int lastIndexColor = 0;
 	protected Color color;
 	protected Ubik ubik;
-	
+	LoggerSim log = new LoggerSim();
 
 	/**
 	 * Configuración del serivcio actual
@@ -230,8 +231,8 @@ public abstract class SharedService extends FixedDomoticDevice {
 				maxSatisfaction = confSatisfaction;			
 
 		}
-		if(Preferences.echo)
-			System.out.println("maxSatisfaction="+maxSatisfaction);
+
+	   log.finest("maxSatisfaction="+maxSatisfaction);
 		
 		return maxSatisfaction;
 		
@@ -253,8 +254,7 @@ public abstract class SharedService extends FixedDomoticDevice {
 
 		}
 		
-		if(Preferences.echo)
-			System.out.println("minSatisfaction="+minSatisfaction);
+		log.finest("minSatisfaction="+minSatisfaction);
 			
 		return minSatisfaction;
 		
@@ -267,8 +267,7 @@ public abstract class SharedService extends FixedDomoticDevice {
 	public double getServiceSatisfaction() {
 		double servSatisfaction = this.getSatisfaction();
 		
-		if(Preferences.echo)
-			System.out.println("servSatisfaction="+servSatisfaction);
+		log.finest("servSatisfaction="+servSatisfaction);
 		
 		return servSatisfaction;
 	}
@@ -281,9 +280,8 @@ public abstract class SharedService extends FixedDomoticDevice {
 	public double getNormServSas() {
 		double minSatisfaction = getMinSatisfaction();
 		double normServSas = (getServiceSatisfaction()-minSatisfaction)/(getMaxSatisfaction()-minSatisfaction);
-		
-		if(Preferences.echo)
-			System.out.println("normServSas="+normServSas+"\n");
+
+		log.finest("normServSas="+normServSas+"\n");
 		
 		return normServSas;
 	}
@@ -297,8 +295,8 @@ public abstract class SharedService extends FixedDomoticDevice {
 		
 		double boundedServSas = this.getSatisfaction()/(this.getUsers().size()*10);
 	
-		if(Preferences.echo)
-			System.out.println("boundedServSas="+boundedServSas+"\n");
+		log.finest("boundedServSas="+boundedServSas+"\n");
+		
 		return boundedServSas;
 		
 	}
