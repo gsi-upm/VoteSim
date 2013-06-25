@@ -67,9 +67,9 @@ public class RangeVotingMethod extends VotingMethod {
 	public String getSelectedConfiguration() {
 		doVoting();		
 		if (echo) {
-			log.finest("RangeVoting VOTES ORDERED for " + this.css.getName());
-			log.finest(votesToString(this.orderedVotes, this.css));
-			log.finest("Result: " + this.css.getCurrentConfiguration());
+			log.finest("[VotingMethod] RangeVoting VOTES ORDERED for " + this.css.getName());
+			log.finest("[VotingMethod] "+votesToString(this.orderedVotes, this.css));
+			log.finest("[VotingMethod] Result: " + this.css.getCurrentConfiguration());
         }
 		return this.selectedConfiguration;
 	}

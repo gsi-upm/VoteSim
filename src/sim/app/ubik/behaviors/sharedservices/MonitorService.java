@@ -139,16 +139,16 @@ public class MonitorService implements Steppable, Stoppable {
         
         if(momentOfConflict==1 ){
         	
-            //actualizar el contador de tiempo sin servicio querido
-            updateStepsWithoutHavingAWantedService();
-            momentsOfConflict.val++;
+           //actualizar el contador de tiempo sin servicio querido
+           updateStepsWithoutHavingAWantedService();
+           momentsOfConflict.val++;
         	
-        	/* Se calcula la media de satisfaccion dividiendo entre el numero de servicios en conflicto que han contribuido */
-        	globalSatisfaction = globalSatisfaction/servicesWithConflict.val;
+           /* Se calcula la media de satisfaccion dividiendo entre el numero de servicios en conflicto que han contribuido */
+           globalSatisfaction = globalSatisfaction/servicesWithConflict.val;
         	
         	
-        	/* Se actualiza la satisfaccion acumulada */
-	        globalSatisfactionAccumulated = satisfactionAccumulated.val*(momentsOfConflict.val-1) + globalSatisfaction;
+           /* Se actualiza la satisfaccion acumulada */
+	       globalSatisfactionAccumulated = satisfactionAccumulated.val*(momentsOfConflict.val-1) + globalSatisfaction;
         	
            satisfactionPerUsers.val  = globalSatisfaction;
          
@@ -159,10 +159,11 @@ public class MonitorService implements Steppable, Stoppable {
            usersWithAcceptableConfigurations.val =  usersWithAcceptableConfigurationsCounter / ((double) numberOfUsers);
            usersWithAcceptableConfigurationsAccumulated.val +=  usersWithAcceptableConfigurations.val ;    
            
-           log.finest("Step: "+step);
-           log.finest("SAS: "+globalSatisfaction);
-           log.finest("Accumulated SAS: "+globalSatisfactionAccumulated);
-           
+           /* Logger */
+           log.info("##########################################################################################");
+           log.info("[Monitor] Step: "+step);
+           log.finest("[Monitor] SAS: "+globalSatisfaction);
+           log.finest("[Monitor] Accumulated SAS: "+globalSatisfactionAccumulated);          
             
 
            
@@ -172,16 +173,14 @@ public class MonitorService implements Steppable, Stoppable {
            if(momentsOfConflict.val==this.momentOfConflictToStop){    
         	   log.info("End!, acc. satisfaction:" +   usersWithAcceptableConfigurationsAccumulated.val);            
                ubik.kill();
-            }
-           
+            }          
 
         	
-   	        log.info("GlobalSatisfactionAcummulated sin dividir: "+globalSatisfactionAccumulated);
-   	        log.info("Moments of conflict: "+momentsOfConflict.val);
-   	        log.info("Servicios en conflicto: "+servicesWithConflict.val);
-   	     	log.info("Global dividida: "+satisfactionAccumulated.val);
-   	  		log.info("");
-
+           /* Logger */
+   	        log.info("[Monitor] GlobalSatisfactionAcummulated sin dividir: "+globalSatisfactionAccumulated);
+   	        log.info("[Monitor] Moments of conflict: "+momentsOfConflict.val);
+   	        log.info("[Monitor] Servicios en conflicto: "+servicesWithConflict.val);
+   	     	log.info("[Monitor] Global dividida: "+satisfactionAccumulated.val);
             
         }
         

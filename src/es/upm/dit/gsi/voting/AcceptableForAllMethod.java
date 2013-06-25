@@ -56,17 +56,14 @@ public class AcceptableForAllMethod extends VotingMethod {
 	public AcceptableForAllMethod(SharedService css) {
 		super(css);		
 	}
-	
 
 	
 	private void doVoting() {
 		ArrayList<MutableInt2D> orderedVotes = this.orderPreferences(this.votingConfigurations(css));
         for (MutableInt2D mi : orderedVotes) {
             if (isAcceptableForAll(css.getConfigurations()[mi.x], css)) {
-            	setSelectedConfiguration(mi.x);
-                if (echo) {
-                	log.finest("First vote acceptable for all: " + css.getConfigurations()[mi.x] + ", votes: " + votesToString(orderedVotes, css));
-                }
+            	setSelectedConfiguration(mi.x);                
+                log.finest("[VotingMethod] First vote acceptable for all: " + css.getConfigurations()[mi.x] + ", votes: " + votesToString(orderedVotes, css));                
                 setAcceptableForAll(true);
             }
         }
@@ -79,9 +76,7 @@ public class AcceptableForAllMethod extends VotingMethod {
 		if (getAcceptableForAll()) {
 			return this.getSelectedConfiguration();           
         }else {
-        	 if (echo) {
-        		 log.finest("No vote acceptable for all in , deciding by votes");
-             }
+        	 log.finest("[VotingMethod] No vote acceptable for all in , deciding by votes");             
         	 VotingMethod rv = new RangeVotingMethod(css);
         	 return rv.getSelectedConfiguration();
         }

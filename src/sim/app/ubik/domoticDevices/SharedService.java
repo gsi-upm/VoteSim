@@ -232,7 +232,7 @@ public abstract class SharedService extends FixedDomoticDevice {
 
 		}
 
-	   log.finest("maxSatisfaction="+maxSatisfaction);
+	   log.finest("[SharedService] maxSatisfaction="+maxSatisfaction);
 		
 		return maxSatisfaction;
 		
@@ -254,7 +254,7 @@ public abstract class SharedService extends FixedDomoticDevice {
 
 		}
 		
-		log.finest("minSatisfaction="+minSatisfaction);
+		log.finest("[SharedService] minSatisfaction="+minSatisfaction);
 			
 		return minSatisfaction;
 		
@@ -267,7 +267,7 @@ public abstract class SharedService extends FixedDomoticDevice {
 	public double getServiceSatisfaction() {
 		double servSatisfaction = this.getSatisfaction();
 		
-		log.finest("servSatisfaction="+servSatisfaction);
+		log.finest("[SharedService] servSatisfaction="+servSatisfaction);
 		
 		return servSatisfaction;
 	}
@@ -281,7 +281,7 @@ public abstract class SharedService extends FixedDomoticDevice {
 		double minSatisfaction = getMinSatisfaction();
 		double normServSas = (getServiceSatisfaction()-minSatisfaction)/(getMaxSatisfaction()-minSatisfaction);
 
-		log.finest("normServSas="+normServSas+"\n");
+		log.finest("[SharedService] normServSas="+normServSas+"\n");
 		
 		return normServSas;
 	}
@@ -295,7 +295,7 @@ public abstract class SharedService extends FixedDomoticDevice {
 		
 		double boundedServSas = this.getSatisfaction()/(this.getUsers().size()*10);
 	
-		log.finest("boundedServSas="+boundedServSas+"\n");
+		log.finest("[SharedService] boundedServSas="+boundedServSas);
 		
 		return boundedServSas;
 		

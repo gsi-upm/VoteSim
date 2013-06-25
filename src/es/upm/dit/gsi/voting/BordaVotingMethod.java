@@ -87,6 +87,7 @@ public class BordaVotingMethod extends VotingMethod {
             	ArrayList<MutableInt2D> userVotes = getUserVotes(ui);
             	votes.get(ordered.get(i).x).y += userVotes.get(ordered.get(i).x).y;	            	
             }
+            log.finest("[getUserVotes] Votes for "+ui.getName()+":"+ getUserVotesToString(ui));
         }
         return votes;
     }
@@ -113,9 +114,9 @@ public class BordaVotingMethod extends VotingMethod {
 	public String getSelectedConfiguration() {
 		doVoting();
 		if (echo) {
-			log.finest("Plurality VOTES ORDERED for " + this.css.getName());
-			log.finest(votesToString(this.orderedVotes, this.css));
-			log.finest("Result: " + this.css.getCurrentConfiguration());
+			log.finest("[VotingMethod] Borda VOTES ORDERED for " + this.css.getName());
+			log.finest("[VotingMethod] "+votesToString(this.orderedVotes, this.css));
+			log.finest("[VotingMethod] Result: " + this.css.getCurrentConfiguration());
         }
 		return this.selectedConfiguration;
 	}

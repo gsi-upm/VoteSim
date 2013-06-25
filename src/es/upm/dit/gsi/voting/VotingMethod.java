@@ -38,6 +38,7 @@ package es.upm.dit.gsi.voting;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import sim.app.ubik.behaviors.sharedservices.LoggerSim;
 import sim.app.ubik.behaviors.sharedservices.UserInterface;
 import sim.app.ubik.domoticDevices.SharedService;
 import sim.util.MutableInt2D;
@@ -57,7 +58,7 @@ public abstract class VotingMethod {
 	ArrayList<MutableInt2D> orderedVotes;
 	ArrayList<MutableInt2D> votes;
 	
-	Logger log = Logger.getLogger("VotingMethod");
+	LoggerSim log = new LoggerSim();
 	
 	public VotingMethod(SharedService css) {
 		this.css = css;
@@ -190,8 +191,10 @@ public abstract class VotingMethod {
         	
             for (int i = 0; i < configurations.length; i++) {
             	ArrayList<MutableInt2D> userVotes = getUserVotes(ui);
+            	
             	votes.get(ordered.get(i).x).y += userVotes.get(ordered.get(i).x).y;	  
             }
+            log.finest("[getUserVotes] Votes for "+ui.getName()+":"+ getUserVotesToString(ui));
         }
         return votes;
     }
@@ -213,20 +216,34 @@ public abstract class VotingMethod {
     	//incializar votos con configuraciones
         for (int i = 0; i < ordered.size(); i++) {
             votes.add(new MutableInt2D(i, 0));
-        }        
+        }
        
         for (int i = 0; i < configurations.length; i++) {
             votes.get(i).y += ui.getNegotiation().getPreferences(css).get(configurations[i]);
         }
         
-        
+        //log.finest("[getUserVotes] Votes for "+ui.getName()+":"+ votesToString(votes));
         return votes;
     	
     }
     
     public String getUserVotesToString(UserInterface ui) {
     	ArrayList<MutableInt2D> votes = getUserVotes(ui);
-    	return votes.toString();
+    	
+    	String r = "";
+        for (MutableInt2D mi : votes) {
+            r += css.getConfigurations()[mi.x] + "/" + mi.y + ",";
+        }
+        return r.substring(0, r.length() - 1);
+    }
+    
+    public String votesToString(ArrayList<MutableInt2D> votes) {
+    	
+    	String r = "";
+        for (MutableInt2D mi : votes) {
+            r += css.getConfigurations()[mi.x] + "/" + mi.y + ",";
+        }
+        return r.substring(0, r.length() - 1);
     }
  
     

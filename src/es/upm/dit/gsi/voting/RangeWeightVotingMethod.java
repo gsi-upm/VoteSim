@@ -191,9 +191,9 @@ public class RangeWeightVotingMethod extends VotingMethod {
 	public String getSelectedConfiguration() {
 		selectConfigurationByNegotiationWeight(css);
 		if (echo) {
-			log.finest("VOTES ORDERED for " + this.css.getName());
-			log.finest(votesToString(this.orderedVotes, this.css));
-			log.finest("Result: " + this.css.getCurrentConfiguration());
+			log.finest("[VotingMethod] VOTES ORDERED for " + this.css.getName());
+			log.finest("[VotingMethod] "+votesToString(this.orderedVotes, this.css));
+			log.finest("[VotingMethod] Result: " + this.css.getCurrentConfiguration());
         }
 		return this.selectedConfiguration;
 	}
