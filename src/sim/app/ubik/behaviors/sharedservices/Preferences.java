@@ -54,7 +54,7 @@ import weka.core.Instance;
 public class Preferences {
 
     public static boolean echo = true;
-    public static boolean eventoAnomalo = true;
+    public static boolean eventoAnomalo = false;
 
  
     protected UserInterface user;

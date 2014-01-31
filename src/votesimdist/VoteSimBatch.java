@@ -86,7 +86,7 @@ public class VoteSimBatch {
      * 4 = Euclidean distance
      * 5 = Manhattan distance 
      */
-    static final int[] preselectionMethods = {0,4};
+    static final int[] preselectionMethods = {0,2,3,4,5};
     
     
     static ArrayList<String> headings;
