@@ -464,7 +464,7 @@ public class MonitorServiceGUI extends javax.swing.JFrame implements Steppable, 
         if (!log.getText().equals(ms.text)) log.setText(ms.text);        
          labelmomentsofconflict.setText(Integer.toString(ms.momentsOfConflict.intValue()));
         this.nusers.setText(Integer.toString(ms.numberOfUsersUsingServices));
-        this.asatis.setText(Integer.toString(ms.satisfactionAccumulated.intValue()));
+        this.asatis.setText(Float.toString(ms.satisfactionAccumulated.floatValue()));
         labeluserwithwanted.setText(Float.toString(ms.usersWithAcceptableConfigurations.floatValue()));
         labeluserwithwantedacc.setText(Float.toString(ms.usersWithAcceptableConfigurationsAccumulated.floatValue()));
         this.satisfaction.setText(Float.toString(ms.satisfactionPerUsers.floatValue()));

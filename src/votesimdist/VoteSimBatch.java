@@ -163,7 +163,7 @@ public class VoteSimBatch {
 
         ArrayList<GenericLogger> r = new ArrayList<GenericLogger>();
         r.add(GenericLogger.getMean(listOfResults));
-        r.add(GenericLogger.getStandardDeviation(listOfResults));
+        r.add(GenericLogger.getStandardDeviation(listOfResults));    
         return r;
 
     }
